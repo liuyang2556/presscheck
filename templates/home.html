@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load static %}
+{# 页面标题 #}
+{% block title %}
+    冲压部品点检系统|首页
+{% endblock %}
+
+{% block header_extends %}
+    <link rel="stylesheet" type="text/css" href="{% static "home.css" %}">
+{% endblock %}
+
+{% block nav_home_active %}active{% endblock %}
+{# 页面内容 #}
+{% block content %}
+    <h3 class="home-content">欢迎使用冲压部品点检系统</h3>
+{% endblock %}

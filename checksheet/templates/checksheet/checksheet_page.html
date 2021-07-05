@@ -1,0 +1,1373 @@
+{% extends 'base.html' %}
+{% block title %}{{ checksheet.parts_code }}{% endblock %}
+{% block nav_checksheet_active %}active{% endblock %}
+
+{% load static %}
+{% load comment_tags %}
+
+
+{% block header_extends %}
+    <link rel="stylesheet" href="{% static 'checksheet/checksheet.css' %}">
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+{# 页面内容 #}
+{% block content %}
+    <div class="body">
+        <form action="{% url 'updatesheet_data' %}" name="提交页面" method="post">
+            {% csrf_token %}
+            <div class="title"><h3>冲  压  部  品  点  检  表</h3></div>
+           {#  <div class="container"> #}
+            <div class="row">
+                <div class="col-xs-3">
+                    <ul class="checksheet-info-description">
+                        管理编号：{{ checksheet.管理编号 }}&nbsp&nbsp
+                        <li>
+                            车型：<a href="{% url 'cars_with_type' checksheet.car_type.pk %}">{{ checksheet.car_type }}</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-xs-5">
+                    <p>部品番号：{{ checksheet.parts_code }}&nbsp|&nbsp部品名称：{{ checksheet.parts_name }}</p>
+                </div>
+                <div class="col-xs-2">
+                    <p>机械名：{{ checksheet.machine_type }}</p>
+                </div>
+
+                 <div class="col-xs-2">
+                    <p>加工日：{{ checksheet.last_updated_time|date:"Y-m-d H:i:s" }}</p>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-3">
+                    <p>标准SPM：{{ checksheet.标准spm }}&nbsp|&nbsp
+                   加工SPM：<input type="text" name="加工SPM" style="height: 25px;width: 40px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.标准spm }}';"></p>
+                </div>
+                <div class="col-xs-2">
+                    <p>容器：{{ checksheet.容器 }}&nbsp|&nbspSNP：{{ checksheet.SNP }}</p>
+                </div>
+                <div class="col-xs-3">
+                    <p>材质：{{ checksheet.材质 }}&nbsp|&nbsp板厚：{{ checksheet.板厚 }}</p>
+                </div>
+
+                {% if  manage_num_one == 'B' %}
+                    <div class="col-xs-2">
+                        <p>标准材料宽度：{{ checksheet.标准材料宽度}}mm</p>
+                    </div>
+                    <div class="col-xs-2">
+                        <p>进给量：{{ checksheet.进给量 }}mm</p>
+                    </div>
+                {% else  %}
+                    <div class="col-xs-4">
+                        <p>卷材代号：<input type="text" name="卷材代号" id="coil-code"  style="height: 25px;width: 300px;"></p>
+                    </div>
+                {% endif %}
+            </div>
+            <hr>
+            <div class="row">
+                {% if  manage_num_one == 'B' %}
+                    <div class="col-xs-3">
+                        <p>加工模高：{{ checksheet.模块高度设定 }}mm&nbsp|&nbsp加工值：<input type="text" name="模具高度" style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.模块高度设定 }}';">mm</p>
+                        <p>模具检查清扫&nbsp&nbsp
+                            <label>
+                                <input type="radio" name="模具检查清扫" id="模具检查清扫1" value="有" checked>有
+                                <input type="radio"  name="模具检查清扫" id="模具检查清扫2" value="无">无
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col-xs-3">
+                        <p>模具修理&nbsp&nbsp
+                            <label>
+                                <input type="radio" name="模具修理" id="模具修理1" value="有">有
+                                <input type="radio"  name="模具修理" id="模具修理2" value="无" checked>无
+                            </label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+
+                            机械修理&nbsp&nbsp
+                            <label>
+                                <input type="radio" name="机械修理" id="机械修理1" value="有">有
+                                <input type="radio"  name="机械修理" id="机械修理2" value="无" checked>无
+                            </label>
+                        </p>
+                        <p>人手替换&nbsp&nbsp
+                            <label>
+                                <input type="radio" name="人手替换" id="人手替换1" value="有">有
+                                <input type="radio"  name="人手替换" id="人手替换2" value="无" checked>无
+                            </label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            设变号：<input type="text" name="设变号" style="height: 25px;width: 80px;" placeholder="无">
+                        </p>
+                    </div>
+                    <div class="col-xs-6">
+                        <p>
+                            加工批次号：<input type="text" name="加工批次号" style="height: 25px;width: 200px;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            计划数量：<input type="text" name="计划数量" style="height: 25px;width: 100px;" oninput = "value=value.replace(/[^\d]/g,'')">pcs
+                        </p>
+                        <p>
+                            生产数：<input type="text" name="生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">pcs&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            合格数：<input type="text" name="合格数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">pcs&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            不良数：<input type="text" name="不良数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">pcs
+                        </p>
+                    </div>
+                {% else  %}
+                    <div class="col-xs-4">
+                        <p>拉延模压力：{{ checksheet.拉延模压力设定 }}&nbsp|&nbsp加工值：<input type="text" name="拉延模压力"style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.拉延模压力设定 }}';">MPa&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp生产数：<input type="text" name="生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">个</p>
+                        <p>模块高度：{{ checksheet.模块高度设定 }}&nbsp|&nbsp加工值：<input type="text" name="模具高度" style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.模块高度设定 }}';">mm&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp合格数：<input type="text" name="合格数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">个</p>
+                        <p>气垫顶出高度：{{ checksheet.气垫顶出高度设定 }}&nbsp|&nbsp加工值：<input type="text" name="气垫顶出高度" style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.气垫顶出高度设定 }}';">mm&nbsp&nbsp不良数：<input type="text" name="不良数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">个</p>
+                    </div>
+                    <div class="col-xs-2">
+                        <p>模具修理&nbsp&nbsp
+                            <label>
+                                <input type="radio" name="模具修理" id="模具修理1" value="有">有
+                                <input type="radio"  name="模具修理" id="模具修理2" value="无" checked>无
+                            </label>
+                        </p>
+                        <p>机械修理&nbsp&nbsp
+                            <label>
+                                <input type="radio" name="机械修理" id="机械修理1" value="有">有
+                                <input type="radio"  name="机械修理" id="机械修理2" value="无" checked>无
+                            </label>
+                        </p>
+                        <p>人手替换&nbsp&nbsp
+                            <label>
+                                <input type="radio" name="人手替换" id="人手替换1" value="有">有
+                                <input type="radio"  name="人手替换" id="人手替换2" value="无" checked>无
+                            </label>
+                        </p>
+                    </div>
+                    <div class="col-xs-1">
+                        <p>使用冲床&nbsp&nbsp
+                            <label>
+                                <input type="radio" name="使用冲床" id="使用冲床1" value="有">前
+                                <input type="radio"  name="使用冲床" id="使用冲床2" value="无" >后
+                            </label>
+                        </p>
+                        <p>设变号：<input type="text" name="设变号" style="height: 25px;width: 80px;" placeholder="无"></p>
+                    </div>
+                    <div class="col-xs-2">
+                        <label for="BL材生产日期">BL材生产日期</label>
+                        <input type="date" name="BL材生产日期1" class="form-control" id="BL材生产日期1">
+                        <input type="date" name="BL材生产日期2" class="form-control" id="BL材生产日期2">
+                    </div>
+                    <div class="col-xs-3">
+                        <label for="BL材批次号">BL材批次号</label>
+                        <input type="text" name="BL材批次号1" class="form-control" id="BL材批次号1">
+                        <input type="text" name="BL材批次号2" class="form-control" id="BL材批次号2">
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="qc">
+                <div class="panel panel-default">
+                    <div class="panel-heading">品质确认项目</div>
+                        <table class="table table-bordered">
+                            <tbody>
+                                <tr>
+                                    <th colspan="3">管理项目（重要项目画〇）</th>
+                                    <th>{{ checksheet.管理项目1 }}</th>
+                                    <th>{{ checksheet.管理项目2 }}</th>
+                                    <th>{{ checksheet.管理项目3 }}</th>
+                                    <th>{{ checksheet.管理项目4 }}</th>
+                                    <th>{{ checksheet.管理项目5 }}</th>
+                                    <th>{{ checksheet.管理项目6 }}</th>
+                                    <th>{{ checksheet.管理项目7 }}</th>
+                                    <th rowspan="2">二次确认</th>
+                                </tr>
+                                <tr>
+                                    <td colspan="2" rowspan="2">判断基准</td>
+                                    <td>规格值</td>
+                                    <td>{{ checksheet.规格值1 }}</td>
+                                    <td>{{ checksheet.规格值2 }}</td>
+                                    <td>{{ checksheet.规格值3 }}</td>
+                                    <td>{{ checksheet.规格值4 }}</td>
+                                    <td>{{ checksheet.规格值5 }}</td>
+                                    <td>{{ checksheet.规格值6 }}</td>
+                                    <td>{{ checksheet.规格值7 }}</td>
+                                </tr>
+                                <tr>
+                                    <td>确认方法</td>
+                                    <td>{{ checksheet.确认方法1 }}</td>
+                                    <td>{{ checksheet.确认方法2 }}</td>
+                                    <td>{{ checksheet.确认方法3 }}</td>
+                                    <td>{{ checksheet.确认方法4 }}</td>
+                                    <td>{{ checksheet.确认方法5 }}</td>
+                                    <td>{{ checksheet.确认方法6 }}</td>
+                                    <td>{{ checksheet.确认方法7 }}</td>
+                                    <td>样件对比</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">生产时间</td>
+                                    <td>生产数|频次</td>
+                                    <td>{{ checksheet.确认频次1 }}</td>
+                                    <td>{{ checksheet.确认频次2 }}</td>
+                                    <td>{{ checksheet.确认频次3 }}</td>
+                                    <td>{{ checksheet.确认频次4 }}</td>
+                                    <td>{{ checksheet.确认频次5 }}</td>
+                                    <td>{{ checksheet.确认频次6 }}</td>
+                                    <td>{{ checksheet.确认频次7 }}</td>
+                                    <td>初/中/终</td>
+                                </tr>
+                                <tr>
+                                    <td>初</td>
+                                    <td><input type="time" name="初检时间" style="border:none;"></td>
+                                    <td>1</td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目11" id="管理项目11-1" value="OK">OK
+                                            <input type="radio"  name="管理项目11" id="管理项目11-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目12" id="管理项目12-1" value="OK">OK
+                                            <input type="radio"  name="管理项目12" id="管理项目12-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目13" id="管理项目13-1" value="OK">OK
+                                            <input type="radio"  name="管理项目13" id="管理项目13-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目14" id="管理项目14-1" value="OK">OK
+                                            <input type="radio"  name="管理项目14" id="管理项目14-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td><input type="text" name="规格值15" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值5 }}';"></td>
+                                    <td><input type="text" name="规格值16" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值6 }}';"></td>
+                                    <td><input type="text" name="规格值17" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值7 }}';"></td>
+                                    <td><input type="text" name="二次确认1" style="height: 25px;width: 90px;"  onfocus="javascript:if(this.value=='')this.value='OK';"></td>
+                                </tr>
+                                <tr>
+                                    <td>中</td>
+                                    <td><input type="time" name="中检时间" style="border:none;"></td>
+                                    <td><input type="text" name="中检生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')"></td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目21" id="管理项目21-1" value="OK">OK
+                                            <input type="radio"  name="管理项目21" id="管理项目21-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目22" id="管理项目22-1" value="OK">OK
+                                            <input type="radio"  name="管理项目22" id="管理项目22-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目23" id="管理项目23-1" value="OK">OK
+                                            <input type="radio"  name="管理项目23" id="管理项目23-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目24" id="管理项目24-1" value="OK">OK
+                                            <input type="radio"  name="管理项目24" id="管理项目24-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td><input type="text" name="规格值25" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值5 }}';"></td>
+                                    <td><input type="text" name="规格值26" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值6 }}';"></td>
+                                    <td><input type="text" name="规格值27" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值7 }}';"></td>
+                                    <td><input type="text" name="二次确认2" style="height: 25px;width: 90px;"  onfocus="javascript:if(this.value=='')this.value='OK';"></td>
+                                </tr>
+                                <tr>
+                                    <td>终</td>
+                                    <td><input type="time" name="终检时间" style="border:none;"></td>
+                                    <td><input type="text" name="终检生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')"></td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目31" id="管理项目31-1" value="OK">OK
+                                            <input type="radio"  name="管理项目31" id="管理项目31-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目32" id="管理项目32-1" value="OK">OK
+                                            <input type="radio"  name="管理项目32" id="管理项目32-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目33" id="管理项目33-1" value="OK">OK
+                                            <input type="radio"  name="管理项目33" id="管理项目33-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label>
+                                            <input type="radio" name="管理项目34" id="管理项目34-1" value="OK">OK
+                                            <input type="radio"  name="管理项目34" id="管理项目34-2" value="NG">NG
+                                        </label>
+                                    </td>
+                                    <td><input type="text" name="规格值35" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值5 }}';"></td>
+                                    <td><input type="text" name="规格值36" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值6 }}';"></td>
+                                    <td><input type="text" name="规格值37" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值7 }}';"></td>
+                                    <td><input type="text" name="二次确认3" style="height: 25px;width: 90px;"  onfocus="javascript:if(this.value=='')this.value='OK';"></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="panel panel-default">
+                    <div class="panel-heading">过往不良确认</div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>发生日</th>
+                                    <th>不合格内容</th>
+                                    <th>发生原因</th>
+                                    <th>初</th>
+                                    <th>中</th>
+                                    <th>终</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{ checksheet.发生日1 }}</td>
+                                    <td>{{ checksheet.不合格内容1 }}</td>
+                                    <td>{{ checksheet.发生原因1 }}</td>
+                                    {% if  checksheet.发生日1 %}
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="初1" id="初1-1" value="OK">OK
+                                                <input type="radio"  name="初1" id="初2-1" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="中1" id="中1-1" value="OK">OK
+                                                <input type="radio"  name="中1" id="中2-1" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="终1" id="终1-1" value="OK">OK
+                                                <input type="radio"  name="终1" id="终2-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                    {% else %}
+                                        <td>None</td>
+                                        <td>None</td>
+                                        <td>None</td>
+                                    {% endif %}
+                                <tr>
+                                    <td>{{ checksheet.发生日2 }}</td>
+                                    <td>{{ checksheet.不合格内容2 }}</td>
+                                    <td>{{ checksheet.发生原因2 }}</td>
+
+                                    {% if  checksheet.发生日2 %}
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="初2" id="初2-1" value="OK">OK
+                                                <input type="radio"  name="初2" id="初2-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="中2" id="中2-1" value="OK">OK
+                                                <input type="radio"  name="中2" id="中2-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="终2" id="终2-1" value="OK">OK
+                                                <input type="radio"  name="终2" id="终2-2" value="NG">NG
+                                            </label>
+
+                                    {% else %}
+                                        <td>None</td>
+                                        <td>None</td>
+                                        <td>None</td>
+                                    {% endif %}
+                                </tr>
+                                <tr>
+                                    <td>{{ checksheet.发生日3 }}</td>
+                                    <td>{{ checksheet.不合格内容3 }}</td>
+                                    <td>{{ checksheet.发生原因3 }}</td>
+
+                                    {% if  checksheet.发生日3 %}
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="初3" id="初3-1" value="OK">OK
+                                                <input type="radio"  name="初3" id="初3-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="中3" id="中3-1" value="OK">OK
+                                                <input type="radio"  name="中3" id="中3-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="终3" id="终3-1" value="OK">OK
+                                                <input type="radio"  name="终3" id="终3-2" value="NG">NG
+                                            </label>
+
+                                    {% else %}
+                                        <td>None</td>
+                                        <td>None</td>
+                                        <td>None</td>
+                                    {% endif %}
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            {% if prg_or_bl == 'XX' %}
+
+            {% else %}
+                <div class="check-tools">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">检具点检</div>
+                            <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>确认事项</th>
+                                        <th>表面碰伤</th>
+                                        <th>底部基准面</th>
+                                        <th>基准销损坏</th>
+                                        <th>基准快丢失</th>
+                                        <th>压紧臂损坏</th>
+                                        <th>表面刻线不清</th>
+                                        <th>掉漆/生锈</th>
+                                        <th>滚轮损坏</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>确认方法</td>
+                                        <td>目视</td>
+                                        <td>触摸/目视</td>
+                                        <td>晃动/目视</td>
+                                        <td>目视</td>
+                                        <td>手感/目视</td>
+                                        <td>目视</td>
+                                        <td>目视</td>
+                                        <td>推动/目视</td>
+                                    </tr>
+                                    <tr>
+                                        <td>确认结果</td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="检具1" id="1-1" value="OK">OK
+                                                <input type="radio"  name="检具1" id="1-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="检具2" id="2-1" value="OK">OK
+                                                <input type="radio"  name="检具2" id="2-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="检具3" id="3-1" value="OK">OK
+                                                <input type="radio"  name="检具3" id="3-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="检具4" id="4-1" value="OK">OK
+                                                <input type="radio"  name="检具4" id="4-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="检具5" id="5-1" value="OK">OK
+                                                <input type="radio"  name="检具5" id="5-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="检具6" id="6-1" value="OK">OK
+                                                <input type="radio"  name="检具6" id="6-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="检具7" id="7-1" value="OK">OK
+                                                <input type="radio"  name="检具7" id="7-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                        <td>
+                                            <label>
+                                                <input type="radio" name="检具8" id="8-1" value="OK">OK
+                                                <input type="radio"  name="检具8" id="8-2" value="NG">NG
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+            {% if  prg_or_bl == 'XX' %}
+
+                <div class="row">
+                    <div class="size-check">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">卷材使用信息</div>
+                            <p class="size-check">注意事项：检查时，在确认栏内划〇表示OK，划✕表示NG，并且要报告等候处理。需要计入数据的栏，务必计入数据。同意卷材号码材质，板厚至少测量一次</p>
+                            <div class="panel-body col-xs-12 col-sm-6 col-md-5 col-lg-5">
+                                {{ checksheet.content1|safe }}
+                                {{ checksheet.content2|safe }}
+                            </div>
+
+                            <div class="col-sm-6 col-md-7 col-lg-7">
+                                <div class="panel-body">
+                                    <table class="table table-bordered coil-info">
+                                        <tr>
+                                            <th rowspan="3" colspan="1">NO.</th>
+                                            <th rowspan="1" colspan="10">规格判定</th>
+                                            <th rowspan="1" colspan="2">备注</th>
+                                        </tr>
+                                        <tr>
+                                            <th rowspan="2" colspan="6">卷材号</th>
+                                            <th rowspan="1" colspan="1">作业员</th>
+                                            <th rowspan="1" colspan="1">行车手</th>
+                                            <th rowspan="2" colspan="1">宽度</th>
+                                            <th rowspan="2" colspan="1">生产数量</th>
+                                            <th rowspan="2" colspan="1">完了</th>
+                                            <th rowspan="2" colspan="1">未完</th>
+                                        </tr>
+                                        <tr>
+                                            <th>板厚</th>
+                                            <th>板厚</th>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td colspan="6" class="coil-no1"><input class="float" name="卷材号1" type="text"></td>
+                                            <td class="thickness1-1"><input class="float" name="板厚1-1" type="text"></td>
+                                            <td class="thickness2-1"><input class="float" name="板厚2-1" type="text"></td>
+                                            <td class="width1"><input class="float" name="宽度1" type="text"></td>
+                                            <td  class="production1"><input class="float" name="生产数量1" type="text"></td>
+                                            <td class="done1-1"><input class="float" name="完成1-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-1"><input class="float" name="完成2-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td colspan="6" class="coil-no2"><input class="float" name="卷材号2" type="text"></td>
+                                            <td class="thickness1-2"><input class="float" name="板厚1-2" type="text"></td>
+                                            <td class="thickness2-2"><input class="float" name="板厚2-2" type="text"></td>
+                                            <td class="width2"><input class="float" name="宽度2" type="text"></td>
+                                            <td class="production2"><input class="float" name="生产数量2" type="text"></td>
+                                            <td class="done1-2"><input class="float" name="完成1-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-2"><input class="float" name="完成2-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td colspan="6" class="coil-no3"><input class="float" name="卷材号3" type="text"></td>
+                                            <td class="thickness1-3"><input class="float" name="板厚1-3" type="text"></td>
+                                            <td class="thickness2-3"><input class="float" name="板厚2-3" type="text"></td>
+                                            <td class="width3"><input class="float" name="宽度3" type="text"></td>
+                                            <td class="production3"><input class="float" name="生产数量3" type="text"></td>
+                                            <td class="done1-3"><input class="float" name="完成1-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-3"><input class="float" name="完成2-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td colspan="6" class="coil-no4"><input class="float" name="卷材号4" type="text"></td>
+                                            <td class="thickness1-4"><input class="float" name="板厚1-4" type="text"></td>
+                                            <td class="thickness2-4"><input class="float" name="板厚2-4" type="text"></td>
+                                            <td class="width4"><input class="float" name="宽度4" type="text"></td>
+                                            <td class="production4"><input class="float" name="生产数量4" type="text"></td>
+                                            <td class="done1-4"><input class="float" name="完成1-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-4"><input class="float" name="完成2-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td colspan="6" class="coil-no5"><input class="float" name="卷材号5" type="text"></td>
+                                            <td class="thickness1-5"><input class="float" name="板厚1-5" type="text"></td>
+                                            <td class="thickness2-5"><input class="float" name="板厚2-5" type="text"></td>
+                                            <td class="width5"><input class="float" name="宽度5" type="text"></td>
+                                            <td class="production5"><input class="float" name="生产数量5" type="text"></td>
+                                            <td class="done1-5"><input class="float" name="完成1-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-5"><input class="float" name="完成2-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td colspan="6" class="coil-no6"><input class="float" name="卷材号6" type="text"></td>
+                                            <td class="thickness1-6"><input class="float" name="板厚1-6" type="text"></td>
+                                            <td class="thickness2-6"><input class="float" name="板厚2-6" type="text"></td>
+                                            <td class="width6"><input class="float" name="宽度6" type="text"></td>
+                                            <td class="production6"><input class="float" name="生产数量6" type="text"></td>
+                                            <td class="done1-6"><input class="float" name="完成1-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-6"><input class="float" name="完成2-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td colspan="6" class="coil-no7"><input class="float" name="卷材号7" type="text"></td>
+                                            <td class="thickness1-7"><input class="float" name="板厚1-7" type="text"></td>
+                                            <td class="thickness2-7"><input class="float" name="板厚2-7" type="text"></td>
+                                            <td class="width7"><input class="float" name="宽度7" type="text"></td>
+                                            <td class="production7"><input class="float" name="生产数量7" type="text"></td>
+                                            <td class="done1-7"><input class="float" name="完成1-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-7"><input class="float" name="完成2-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <input type="hidden" name="contenttype" value="checksheet">
+                                <input type="hidden" name="object_id" value="{{ checksheet.pk }}">
+
+                                <input type="hidden" name="manage_num" value="{{ checksheet.管理编号 }}">
+                                <input type="hidden" name="部品番号" value="{{ checksheet.parts_code }}">
+                                <input type="hidden" name="部品名称" value="{{ checksheet.parts_name }}">
+                                <input type="hidden" name="车型" value="{{ checksheet.car_type }}">
+                                <input type="hidden" name="机械名" value="{{ checksheet.machine_type }}">
+                                <input type="hidden" name="container" value="{{ checksheet.容器 }}">
+                                <input type="hidden" name="standard_spm" value="{{ checksheet.标准spm }}">
+                                <input type="hidden" name="SNPs" value="{{ checksheet.SNP }}">
+                                <input type="hidden" name="material" value="{{ checksheet.材质 }}">
+                                <input type="hidden" name="thickness" value="{{ checksheet.板厚 }}">
+                                <input type="hidden" name="加工日" value="{{ checksheet.last_updated_time }}">
+                                <input type="hidden" name="标准材料宽度" value="{{ checksheet.标准材料宽度 }}">
+                                <input type="hidden" name="进给量" value="{{ checksheet.进给量 }}">
+
+                                <input type="hidden" name="draw_set" value="{{ checksheet.拉延模压力设定 }}">
+                                <input type="hidden" name="diehight_set" value="{{ checksheet.模块高度设定 }}">
+                                <input type="hidden" name="cushion_set" value="{{ checksheet.气垫顶出高度设定 }}">
+                                <input type="hidden" name="manage_pj1" value="{{ checksheet.管理项目1 }}">
+                                <input type="hidden" name="manage_pj2" value="{{ checksheet.管理项目2 }}">
+                                <input type="hidden" name="manage_pj3" value="{{ checksheet.管理项目3 }}">
+                                <input type="hidden" name="manage_pj4" value="{{ checksheet.管理项目4 }}">
+                                <input type="hidden" name="manage_pj5" value="{{ checksheet.管理项目5 }}">
+                                <input type="hidden" name="manage_pj6" value="{{ checksheet.管理项目6 }}">
+                                <input type="hidden" name="manage_pj7" value="{{ checksheet.管理项目7 }}">
+                                <input type="hidden" name="manage_spec1" value="{{ checksheet.规格值1 }}">
+                                <input type="hidden" name="manage_spec2" value="{{ checksheet.规格值2 }}">
+                                <input type="hidden" name="manage_spec3" value="{{ checksheet.规格值3 }}">
+                                <input type="hidden" name="manage_spec4" value="{{ checksheet.规格值4 }}">
+                                <input type="hidden" name="manage_spec5" value="{{ checksheet.规格值5 }}">
+                                <input type="hidden" name="manage_spec6" value="{{ checksheet.规格值6 }}">
+                                <input type="hidden" name="manage_spec7" value="{{ checksheet.规格值7 }}">
+                                <input type="hidden" name="confirmation_meth1" value="{{ checksheet.确认方法1 }}">
+                                <input type="hidden" name="confirmation_meth2" value="{{ checksheet.确认方法2 }}">
+                                <input type="hidden" name="confirmation_meth3" value="{{ checksheet.确认方法3 }}">
+                                <input type="hidden" name="confirmation_meth4" value="{{ checksheet.确认方法4 }}">
+                                <input type="hidden" name="confirmation_meth5" value="{{ checksheet.确认方法5 }}">
+                                <input type="hidden" name="confirmation_meth6" value="{{ checksheet.确认方法6 }}">
+                                <input type="hidden" name="confirmation_meth7" value="{{ checksheet.确认方法7 }}">
+                                <input type="hidden" name="confirmation_fre1" value="{{ checksheet.确认频次1 }}">
+                                <input type="hidden" name="confirmation_fre2" value="{{ checksheet.确认频次2 }}">
+                                <input type="hidden" name="confirmation_fre3" value="{{ checksheet.确认频次3 }}">
+                                <input type="hidden" name="confirmation_fre4" value="{{ checksheet.确认频次4 }}">
+                                <input type="hidden" name="confirmation_fre5" value="{{ checksheet.确认频次5 }}">
+                                <input type="hidden" name="confirmation_fre6" value="{{ checksheet.确认频次6 }}">
+                                <input type="hidden" name="confirmation_fre7" value="{{ checksheet.确认频次7 }}">
+
+                                <input type="hidden" name="occur_day1" value="{{ checksheet.发生日1 }}">
+                                <input type="hidden" name="unqualified1" value="{{ checksheet.不合格内容1 }}">
+                                <input type="hidden" name="occur_reason1" value="{{ checksheet.发生原因1 }}">
+                                <input type="hidden" name="occur_day2" value="{{ checksheet.发生日2 }}">
+                                <input type="hidden" name="unqualified2" value="{{ checksheet.不合格内容2 }}">
+                                <input type="hidden" name="occur_reason2" value="{{ checksheet.发生原因2 }}">
+                                <input type="hidden" name="occur_day3" value="{{ checksheet.发生日3 }}">
+                                <input type="hidden" name="unqualified3" value="{{ checksheet.不合格内容3 }}">
+                                <input type="hidden" name="occur_reason3" value="{{ checksheet.发生原因3 }}">
+                                <input type="hidden" name="确认点位1" value="{{ checksheet.content1 }}">
+                                <input type="hidden" name="确认点位2" value="{{ checksheet.content2 }}">
+                                <input type="submit" value="提交" class="btn btn-primary pull-right">
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+            {% else %}
+                {% if  manage_num_one == 'B' %}
+                    <div class="PRG-QC">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">卷材使用信息</div>
+                                <p class="size-check">注意事项：检查时，在确认栏内划〇表示OK，划✕表示NG，并且要报告等候处理。需要计入数据的栏，务必计入数据。同意卷材号码材质，板厚至少测量一次</p>
+                                <div>
+                                    <table class="table table-bordered coil-info">
+                                        <tr>
+                                            <th rowspan="3" colspan="1">NO.</th>
+                                            <th rowspan="1" colspan="10">规格判定</th>
+                                            <th rowspan="1" colspan="2">备注</th>
+                                        </tr>
+                                        <tr>
+                                            <th rowspan="2" colspan="6">卷材号</th>
+                                            <th rowspan="1" colspan="1">作业员</th>
+                                            <th rowspan="1" colspan="1">行车手</th>
+                                            <th rowspan="2" colspan="1">宽度</th>
+                                            <th rowspan="2" colspan="1">生产数量</th>
+                                            <th rowspan="2" colspan="1">完了</th>
+                                            <th rowspan="2" colspan="1">未完</th>
+                                        </tr>
+                                        <tr>
+                                            <th>板厚</th>
+                                            <th>板厚</th>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td colspan="6" class="coil-no1"><input class="float" name="卷材号1" type="text"></td>
+                                            <td class="thickness1-1"><input class="float" name="板厚1-1" type="text"></td>
+                                            <td class="thickness2-1"><input class="float" name="板厚2-1" type="text"></td>
+                                            <td class="width1"><input class="float" name="宽度1" type="text"></td>
+                                            <td  class="production1"><input class="float" name="生产数量1" type="text"></td>
+                                            <td class="done1-1"><input class="float" name="完成1-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-1"><input class="float" name="完成2-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td colspan="6" class="coil-no2"><input class="float" name="卷材号2" type="text"></td>
+                                            <td class="thickness1-2"><input class="float" name="板厚1-2" type="text"></td>
+                                            <td class="thickness2-2"><input class="float" name="板厚2-2" type="text"></td>
+                                            <td class="width2"><input class="float" name="宽度2" type="text"></td>
+                                            <td class="production2"><input class="float" name="生产数量2" type="text"></td>
+                                            <td class="done1-2"><input class="float" name="完成1-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-2"><input class="float" name="完成2-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td colspan="6" class="coil-no3"><input class="float" name="卷材号3" type="text"></td>
+                                            <td class="thickness1-3"><input class="float" name="板厚1-3" type="text"></td>
+                                            <td class="thickness2-3"><input class="float" name="板厚2-3" type="text"></td>
+                                            <td class="width3"><input class="float" name="宽度3" type="text"></td>
+                                            <td class="production3"><input class="float" name="生产数量3" type="text"></td>
+                                            <td class="done1-3"><input class="float" name="完成1-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-3"><input class="float" name="完成2-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>4</td>
+                                            <td colspan="6" class="coil-no4"><input class="float" name="卷材号4" type="text"></td>
+                                            <td class="thickness1-4"><input class="float" name="板厚1-4" type="text"></td>
+                                            <td class="thickness2-4"><input class="float" name="板厚2-4" type="text"></td>
+                                            <td class="width4"><input class="float" name="宽度4" type="text"></td>
+                                            <td class="production4"><input class="float" name="生产数量4" type="text"></td>
+                                            <td class="done1-4"><input class="float" name="完成1-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-4"><input class="float" name="完成2-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>5</td>
+                                            <td colspan="6" class="coil-no5"><input class="float" name="卷材号5" type="text"></td>
+                                            <td class="thickness1-5"><input class="float" name="板厚1-5" type="text"></td>
+                                            <td class="thickness2-5"><input class="float" name="板厚2-5" type="text"></td>
+                                            <td class="width5"><input class="float" name="宽度5" type="text"></td>
+                                            <td class="production5"><input class="float" name="生产数量5" type="text"></td>
+                                            <td class="done1-5"><input class="float" name="完成1-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-5"><input class="float" name="完成2-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>6</td>
+                                            <td colspan="6" class="coil-no6"><input class="float" name="卷材号6" type="text"></td>
+                                            <td class="thickness1-6"><input class="float" name="板厚1-6" type="text"></td>
+                                            <td class="thickness2-6"><input class="float" name="板厚2-6" type="text"></td>
+                                            <td class="width6"><input class="float" name="宽度6" type="text"></td>
+                                            <td class="production6"><input class="float" name="生产数量6" type="text"></td>
+                                            <td class="done1-6"><input class="float" name="完成1-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-6"><input class="float" name="完成2-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                        <tr>
+                                            <td>7</td>
+                                            <td colspan="6" class="coil-no7"><input class="float" name="卷材号7" type="text"></td>
+                                            <td class="thickness1-7"><input class="float" name="板厚1-7" type="text"></td>
+                                            <td class="thickness2-7"><input class="float" name="板厚2-7" type="text"></td>
+                                            <td class="width7"><input class="float" name="宽度7" type="text"></td>
+                                            <td class="production7"><input class="float" name="生产数量7" type="text"></td>
+                                            <td class="done1-7"><input class="float" name="完成1-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td class="done2-7"><input class="float" name="完成2-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                        </tr>
+                                    </table>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="size-check">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">尺寸测量</div>
+                                <p class="size-check">【基准面对齐后，间隙小于+-0.5mm&nbsp&nbsp&nbsp&nbsp间隙标准：2.5mm~3.5mm】</p>
+                                <div class="panel-body col-xs-12 col-sm-8 col-md-7 col-lg-7">
+                                    {{ checksheet.content1|safe }}
+                                    {{ checksheet.content2|safe }}
+                                </div>
+
+                                <div class="col-sm-4 col-md-5 col-lg-5">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" style="text-align: center; margin-top: 0.6em;">测量值信息</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered" style="margin-top: 0.6em;">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>①</th>
+                                                    <th>②</th>
+                                                    <th>③</th>
+                                                    <th>④</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>初</td>
+                                                    <td>
+                                                        <input class="float" type="text" name="初检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="初检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="初检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="初检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>中</td>
+                                                    <td>
+                                                        <input class="float" type="text" name="中检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="中检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="中检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="中检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>终</td>
+                                                    <td>
+                                                        <input class="float" type="text" name="终检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="终检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="终检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="终检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+
+                                                </tr>
+                                            </table>
+
+                                            {% if checksheet.content2 %}
+                                                <table class="table table-bordered" style="margin-top: 0.6em;">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>①</th>
+                                                        <th>②</th>
+                                                        <th>③</th>
+                                                        <th>④</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>初</td>
+                                                        <td>
+                                                            <input class="float" type="text" name="初检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="初检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="初检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="初检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>中</td>
+                                                        <td>
+                                                            <input class="float" type="text" name="中检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="中检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="中检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="中检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>终</td>
+                                                        <td>
+                                                            <input class="float" type="text" name="终检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="终检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="终检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="终检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            {% else %}
+                                                {{''}}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="contenttype" value="checksheet">
+                                    <input type="hidden" name="object_id" value="{{ checksheet.pk }}">
+                                    <input type="hidden" name="manage_num" value="{{ checksheet.管理编号 }}">
+                                    <input type="hidden" name="部品番号" value="{{ checksheet.parts_code }}">
+                                    <input type="hidden" name="部品名称" value="{{ checksheet.parts_name }}">
+                                    <input type="hidden" name="车型" value="{{ checksheet.car_type }}">
+                                    <input type="hidden" name="机械名" value="{{ checksheet.machine_type }}">
+                                    <input type="hidden" name="container" value="{{ checksheet.容器 }}">
+                                    <input type="hidden" name="standard_spm" value="{{ checksheet.标准spm }}">
+                                    <input type="hidden" name="SNPs" value="{{ checksheet.SNP }}">
+                                    <input type="hidden" name="material" value="{{ checksheet.材质 }}">
+                                    <input type="hidden" name="thickness" value="{{ checksheet.板厚 }}">
+                                    <input type="hidden" name="加工日" value="{{ checksheet.last_updated_time }}">
+                                    <input type="hidden" name="标准材料宽度" value="{{ checksheet.标准材料宽度 }}">
+                                    <input type="hidden" name="进给量" value="{{ checksheet.进给量 }}">
+
+                                    <input type="hidden" name="draw_set" value="{{ checksheet.拉延模压力设定 }}">
+                                    <input type="hidden" name="diehight_set" value="{{ checksheet.模块高度设定 }}">
+                                    <input type="hidden" name="cushion_set" value="{{ checksheet.气垫顶出高度设定 }}">
+                                    <input type="hidden" name="manage_pj1" value="{{ checksheet.管理项目1 }}">
+                                    <input type="hidden" name="manage_pj2" value="{{ checksheet.管理项目2 }}">
+                                    <input type="hidden" name="manage_pj3" value="{{ checksheet.管理项目3 }}">
+                                    <input type="hidden" name="manage_pj4" value="{{ checksheet.管理项目4 }}">
+                                    <input type="hidden" name="manage_pj5" value="{{ checksheet.管理项目5 }}">
+                                    <input type="hidden" name="manage_pj6" value="{{ checksheet.管理项目6 }}">
+                                    <input type="hidden" name="manage_pj7" value="{{ checksheet.管理项目7 }}">
+                                    <input type="hidden" name="manage_spec1" value="{{ checksheet.规格值1 }}">
+                                    <input type="hidden" name="manage_spec2" value="{{ checksheet.规格值2 }}">
+                                    <input type="hidden" name="manage_spec3" value="{{ checksheet.规格值3 }}">
+                                    <input type="hidden" name="manage_spec4" value="{{ checksheet.规格值4 }}">
+                                    <input type="hidden" name="manage_spec5" value="{{ checksheet.规格值5 }}">
+                                    <input type="hidden" name="manage_spec6" value="{{ checksheet.规格值6 }}">
+                                    <input type="hidden" name="manage_spec7" value="{{ checksheet.规格值7 }}">
+                                    <input type="hidden" name="confirmation_meth1" value="{{ checksheet.确认方法1 }}">
+                                    <input type="hidden" name="confirmation_meth2" value="{{ checksheet.确认方法2 }}">
+                                    <input type="hidden" name="confirmation_meth3" value="{{ checksheet.确认方法3 }}">
+                                    <input type="hidden" name="confirmation_meth4" value="{{ checksheet.确认方法4 }}">
+                                    <input type="hidden" name="confirmation_meth5" value="{{ checksheet.确认方法5 }}">
+                                    <input type="hidden" name="confirmation_meth6" value="{{ checksheet.确认方法6 }}">
+                                    <input type="hidden" name="confirmation_meth7" value="{{ checksheet.确认方法7 }}">
+                                    <input type="hidden" name="confirmation_fre1" value="{{ checksheet.确认频次1 }}">
+                                    <input type="hidden" name="confirmation_fre2" value="{{ checksheet.确认频次2 }}">
+                                    <input type="hidden" name="confirmation_fre3" value="{{ checksheet.确认频次3 }}">
+                                    <input type="hidden" name="confirmation_fre4" value="{{ checksheet.确认频次4 }}">
+                                    <input type="hidden" name="confirmation_fre5" value="{{ checksheet.确认频次5 }}">
+                                    <input type="hidden" name="confirmation_fre6" value="{{ checksheet.确认频次6 }}">
+                                    <input type="hidden" name="confirmation_fre7" value="{{ checksheet.确认频次7 }}">
+
+                                    <input type="hidden" name="occur_day1" value="{{ checksheet.发生日1 }}">
+                                    <input type="hidden" name="unqualified1" value="{{ checksheet.不合格内容1 }}">
+                                    <input type="hidden" name="occur_reason1" value="{{ checksheet.发生原因1 }}">
+                                    <input type="hidden" name="occur_day2" value="{{ checksheet.发生日2 }}">
+                                    <input type="hidden" name="unqualified2" value="{{ checksheet.不合格内容2 }}">
+                                    <input type="hidden" name="occur_reason2" value="{{ checksheet.发生原因2 }}">
+                                    <input type="hidden" name="occur_day3" value="{{ checksheet.发生日3 }}">
+                                    <input type="hidden" name="unqualified3" value="{{ checksheet.不合格内容3 }}">
+                                    <input type="hidden" name="occur_reason3" value="{{ checksheet.发生原因3 }}">
+                                    <input type="hidden" name="确认点位1" value="{{ checksheet.content1 }}">
+                                    <input type="hidden" name="确认点位2" value="{{ checksheet.content2 }}">
+                                    <input type="submit" value="提交" class="btn btn-primary pull-right">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                {% else %}
+                    <div class="row">
+                        <div class="size-check">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">尺寸测量</div>
+                                <p class="size-check">【基准面对齐后，间隙小于+-0.5mm&nbsp&nbsp&nbsp&nbsp间隙标准：2.5mm~3.5mm】</p>
+                                <div class="panel-body col-xs-12 col-sm-8 col-md-7 col-lg-7">
+                                    {{ checksheet.content1|safe }}
+                                    {{ checksheet.content2|safe }}
+                                </div>
+
+                                <div class="col-sm-4 col-md-5 col-lg-5">
+                                    <div class="panel panel-default">
+                                        <div class="panel-heading" style="text-align: center; margin-top: 0.6em;">测量值及作业员信息</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered" style="margin-top: 0.6em;">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>①</th>
+                                                    <th>②</th>
+                                                    <th>③</th>
+                                                    <th>④</th>
+                                                    <th>⑤</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>初</td>
+                                                    <td>
+                                                        <input class="float" type="text" name="初检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="初检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="初检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="初检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="初检5" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>中</td>
+                                                    <td>
+                                                        <input class="float" type="text" name="中检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="中检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="中检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="中检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="中检5" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>终</td>
+                                                    <td>
+                                                        <input class="float" type="text" name="终检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="终检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="终检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="终检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                    <td>
+                                                        <input class="float" type="text" name="终检5"  onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <table class="table table-bordered" style="margin-top: 0.6em;">
+                                                <tr>
+                                                    <td>A</td>
+                                                    <td class="human"><input class="float" name="作业员A" type="text"></td>
+                                                    <td>B</td>
+                                                    <td class="human"><input class="float" name="作业员B" type="text"></td>
+                                                </tr>
+                                                <tr>
+                                                    <td>C</td>
+                                                    <td class="human"><input  class="float" name="作业员C" type="text"></td>
+                                                    <td>D</td>
+                                                    <td class="human"><input  class="float" name="作业员D" type="text"></td>
+                                                </tr>
+                                            </table>
+                                            {% if checksheet.content2 %}
+                                                <table class="table table-bordered" style="margin-top: 0.6em;">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>①</th>
+                                                        <th>②</th>
+                                                        <th>③</th>
+                                                        <th>④</th>
+                                                        <th>⑤</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>初</td>
+                                                        <td>
+                                                            <input class="float" type="text" name="初检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="初检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="初检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="初检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="初检25" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>中</td>
+                                                        <td>
+                                                            <input class="float" type="text" name="中检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="中检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="中检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="中检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="中检25" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>终</td>
+                                                        <td>
+                                                            <input class="float" type="text" name="终检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="终检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="终检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="终检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                        <td>
+                                                            <input class="float" type="text" name="终检25"  onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        </td>
+                                                    </tr>
+                                                </table>
+
+                                            {% else %}
+                                                {{''}}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="contenttype" value="checksheet">
+                                    <input type="hidden" name="object_id" value="{{ checksheet.pk }}">
+
+                                    <input type="hidden" name="manage_num" value="{{ checksheet.管理编号 }}">
+                                    <input type="hidden" name="部品番号" value="{{ checksheet.parts_code }}">
+                                    <input type="hidden" name="部品名称" value="{{ checksheet.parts_name }}">
+                                    <input type="hidden" name="车型" value="{{ checksheet.car_type }}">
+                                    <input type="hidden" name="机械名" value="{{ checksheet.machine_type }}">
+                                    <input type="hidden" name="container" value="{{ checksheet.容器 }}">
+                                    <input type="hidden" name="standard_spm" value="{{ checksheet.标准spm }}">
+                                    <input type="hidden" name="SNPs" value="{{ checksheet.SNP }}">
+                                    <input type="hidden" name="material" value="{{ checksheet.材质 }}">
+                                    <input type="hidden" name="thickness" value="{{ checksheet.板厚 }}">
+                                    <input type="hidden" name="加工日" value="{{ checksheet.last_updated_time }}">
+                                    <input type="hidden" name="标准材料宽度" value="{{ checksheet.标准材料宽度 }}">
+                                    <input type="hidden" name="进给量" value="{{ checksheet.进给量 }}">
+
+                                    <input type="hidden" name="draw_set" value="{{ checksheet.拉延模压力设定 }}">
+                                    <input type="hidden" name="diehight_set" value="{{ checksheet.模块高度设定 }}">
+                                    <input type="hidden" name="cushion_set" value="{{ checksheet.气垫顶出高度设定 }}">
+                                    <input type="hidden" name="manage_pj1" value="{{ checksheet.管理项目1 }}">
+                                    <input type="hidden" name="manage_pj2" value="{{ checksheet.管理项目2 }}">
+                                    <input type="hidden" name="manage_pj3" value="{{ checksheet.管理项目3 }}">
+                                    <input type="hidden" name="manage_pj4" value="{{ checksheet.管理项目4 }}">
+                                    <input type="hidden" name="manage_pj5" value="{{ checksheet.管理项目5 }}">
+                                    <input type="hidden" name="manage_pj6" value="{{ checksheet.管理项目6 }}">
+                                    <input type="hidden" name="manage_pj7" value="{{ checksheet.管理项目7 }}">
+                                    <input type="hidden" name="manage_spec1" value="{{ checksheet.规格值1 }}">
+                                    <input type="hidden" name="manage_spec2" value="{{ checksheet.规格值2 }}">
+                                    <input type="hidden" name="manage_spec3" value="{{ checksheet.规格值3 }}">
+                                    <input type="hidden" name="manage_spec4" value="{{ checksheet.规格值4 }}">
+                                    <input type="hidden" name="manage_spec5" value="{{ checksheet.规格值5 }}">
+                                    <input type="hidden" name="manage_spec6" value="{{ checksheet.规格值6 }}">
+                                    <input type="hidden" name="manage_spec7" value="{{ checksheet.规格值7 }}">
+                                    <input type="hidden" name="confirmation_meth1" value="{{ checksheet.确认方法1 }}">
+                                    <input type="hidden" name="confirmation_meth2" value="{{ checksheet.确认方法2 }}">
+                                    <input type="hidden" name="confirmation_meth3" value="{{ checksheet.确认方法3 }}">
+                                    <input type="hidden" name="confirmation_meth4" value="{{ checksheet.确认方法4 }}">
+                                    <input type="hidden" name="confirmation_meth5" value="{{ checksheet.确认方法5 }}">
+                                    <input type="hidden" name="confirmation_meth6" value="{{ checksheet.确认方法6 }}">
+                                    <input type="hidden" name="confirmation_meth7" value="{{ checksheet.确认方法7 }}">
+                                    <input type="hidden" name="confirmation_fre1" value="{{ checksheet.确认频次1 }}">
+                                    <input type="hidden" name="confirmation_fre2" value="{{ checksheet.确认频次2 }}">
+                                    <input type="hidden" name="confirmation_fre3" value="{{ checksheet.确认频次3 }}">
+                                    <input type="hidden" name="confirmation_fre4" value="{{ checksheet.确认频次4 }}">
+                                    <input type="hidden" name="confirmation_fre5" value="{{ checksheet.确认频次5 }}">
+                                    <input type="hidden" name="confirmation_fre6" value="{{ checksheet.确认频次6 }}">
+                                    <input type="hidden" name="confirmation_fre7" value="{{ checksheet.确认频次7 }}">
+
+                                    <input type="hidden" name="occur_day1" value="{{ checksheet.发生日1 }}">
+                                    <input type="hidden" name="unqualified1" value="{{ checksheet.不合格内容1 }}">
+                                    <input type="hidden" name="occur_reason1" value="{{ checksheet.发生原因1 }}">
+                                    <input type="hidden" name="occur_day2" value="{{ checksheet.发生日2 }}">
+                                    <input type="hidden" name="unqualified2" value="{{ checksheet.不合格内容2 }}">
+                                    <input type="hidden" name="occur_reason2" value="{{ checksheet.发生原因2 }}">
+                                    <input type="hidden" name="occur_day3" value="{{ checksheet.发生日3 }}">
+                                    <input type="hidden" name="unqualified3" value="{{ checksheet.不合格内容3 }}">
+                                    <input type="hidden" name="occur_reason3" value="{{ checksheet.发生原因3 }}">
+                                    <input type="hidden" name="确认点位1" value="{{ checksheet.content1 }}">
+                                    <input type="hidden" name="确认点位2" value="{{ checksheet.content2 }}">
+                                    <input type="submit" value="提交" class="btn btn-primary pull-right">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+
+            {% endif %}
+
+        </form>
+        <div>
+            <div class="panel panel-default">
+                <div class="panel-heading">备注</div>
+                <div>
+                    {% if user.is_authenticated %}
+                    <form id="comment_form" action="{% url 'update_comment' %}" method="POST" style="overflow:hidden">
+                        {% csrf_token %}
+                        {% get_comment_form checksheet as comment_form %}
+                        {% for field in comment_form %}
+                            {{ field }}
+                        {% endfor %}
+                        <span id="comment_error" class="text-danger pull-left"></span>
+                        <input type="submit" value="增加情报" class="btn btn-primary pull-right">
+                    </form>
+                    {% else %}
+                        您尚未登录，登录之后方可记录~
+                        <a class="btn btn-primary" href="{% url 'login' %}?from={{ request.get_full_path }}">登录</a>
+                        <span> or </span>
+                        <a class="btn btn-danger" href="{% url 'register' %}?from={{ request.get_full_path }}">注册</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="comment-area">
+            <div class="panel panel-default">
+                <div class="panel-heading"><p class="comment-area-title">过往备注列表</p></div>
+                <div class="panel-body">
+                    <div id="comment_list">
+                        {% get_comment_list checksheet as comments %}
+                        {% for comment in comments %}
+                            <div id="root_{{ comment.pk }}" class="comment">
+                                <span>{{ user.get_nickname_or_username }}</span>
+                                <span>({{ comment.comment_time|date:"Y-m-d H:i:s" }}):</span>
+                                <div id="comment_{{ comment.pk }}">{{ comment.text|safe }}</div>
+                            </div>
+                        {% empty %}
+                            <span id="no_comment">暂无异常情报</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script_extends %}
+    <script type="text/javascript">
+        // 字符串拼接
+        String.prototype.format = function(){
+            var str = this;
+            for (var i = 0; i < arguments.length; i++) {
+                var str = str.replace(new RegExp('\\{' + i + '\\}', 'g'), arguments[i])
+            };
+            return str;
+        }
+        function reply(reply_comment_id){
+            // 设置值
+            $('#reply_comment_id').val(reply_comment_id);
+            var html = $("#comment_" + reply_comment_id).html();
+            $('#reply_content').html(html);
+            $('#reply_content_container').show();
+
+            $('html').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function(){
+                CKEDITOR.instances['id_text'].focus();
+            });
+        }
+        function numFormat(num){
+            return ('00' + num).substr(-2);
+        }
+        function timeFormat(timestamp){
+            var datetime = new Date(timestamp * 1000);
+            var year = datetime.getFullYear();
+            var month = numFormat(datetime.getMonth() + 1);
+            var day = numFormat(datetime.getDate());
+            var hour = numFormat(datetime.getHours());
+            var minute = numFormat(datetime.getMinutes());
+            var second = numFormat(datetime.getSeconds());
+            return year + '-' + month + '-' + day + ' ' + hour + ':' + minute + ':' + second;
+        }
+        $("#comment_form").submit(function(){
+            // 判断是否为空
+            $("#comment_error").text('');
+            if(CKEDITOR.instances['id_text'].document.getBody().getText().trim()==''){
+                $("#comment_error").text('记录内容不能为空');
+                return false;
+            }
+            //更新数据到textarea
+            CKEDITOR.instances['id_text'].updateElement();
+            // 异步提交
+            $.ajax({
+                url: "{% url 'update_comment' %}",
+                type: 'POST',
+                data: $(this).serialize(),
+                cache: false,
+                success: function(data){
+                    console.log(data);
+                    if(data['status']=="SUCCESS"){
+                        if($('#reply_comment_id').val()=='0'){
+                            //  插入评论
+                            var comment_html = '<div id="root_{0}" class="comment">' +
+                                '<span>{1}</span>' +
+                                '<span>({2}): </span>' +
+                                '<div id="comment_{0}">{3}</div>' +
+                                '</div>';
+                            comment_html = comment_html.format(data['pk'], data['username'], timeFormat(data['comment_time']), data['text']);
+                            $("#comment_list").prepend(comment_html);
+                        }else{
+                            //  插入回复
+                            var reply_html = '<div class="reply">' +
+                                        '<span>{1}</span>' +
+                                        '<span>({2})</span>' +
+                                        '<span>回复</span>' +
+                                        '<span>{3}:</span>' +
+                                        '<div id="comment_{0}">{4}</div>' +
+                                        '<div class="like" onclick="likeChange(this, \'{5}\', {0})">' +
+                                            '<span class="glyphicon glyphicon-thumbs-up"></span> ' +
+                                            '<span class="liked-num">0</span>' +
+                                        '</div>' +
+                                        '<a href="javascript:reply({0});">回复</a>' +
+                                    '</div>';
+                            reply_html = reply_html.format(data['pk'], data['username'], timeFormat(data['comment_time']), data['reply_to'], data['text'], data['content_type']);
+                            $("#root_" + data['root_pk']).append(reply_html);
+                        }
+
+                        // 清空编辑框的内容
+                        CKEDITOR.instances['id_text'].setData('');
+                        $('#reply_content_container').hide();
+                        $('#reply_comment_id').val('0');
+                        $('#no_comment').remove();
+                        $("#comment_error").text('评论成功');
+                    }else{
+                        // 显示错误信息
+                        $("#comment_error").text(data['message']);
+                    }
+                },
+                error: function(xhr){
+                    console.log(xhr);
+                }
+            });
+            return false;
+        });
+
+    </script>
+{% endblock %}
+
+
+
+
+
+
+

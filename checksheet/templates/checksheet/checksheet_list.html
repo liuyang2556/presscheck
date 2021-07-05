@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% block title %}冲压部品点检系统|点检表列表{% endblock %}
+{% block nav_checksheet_active %}active{% endblock %}
+
+{% load static %}
+{# {% load comment_tags %} #}
+{# {% load likes_tags %} #}
+{% block header_extends %}
+    <link rel="stylesheet" href="{% static 'checksheet/checksheet.css' %}">
+{% endblock %}
+
+{# {% block nav_checksheet_active %}active{% endblock %} #}
+
+{# 页面内容 #}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12 col-sm-8 col-md-9 col-lg-10">
+                <div class="panel panel-default">
+                    {# <div class="panel-heading">{% block cartype_list_title %}车种列表{% endblock %}</div> #}
+                    <div class="panel-heading">{% block checksheet_list_title %}点检表列表{% endblock %}</div>
+                    <div class="panel-body">
+                        {% for checksheet in checksheets %}
+                            <div class="checksheet">
+                                <h3><a href="{% url 'checksheet_page' checksheet.pk %}">{{ checksheet.parts_code }}</a></h3>
+                                <p class="checksheet-info">
+                                    <span class="glyphicon glyphicon-tag"></span><a href="{% url 'cars_with_type' checksheet.car_type.pk %}">{{ checksheet.car_type }}</a>
+                                </p>
+                            </div>
+                        {% empty %}
+                            <div class="checksheet">
+                                <h3>--暂无点检表，敬请添加--</h3>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="paginator">
+                    <ul class="pagination">
+                    {# 上一页 #}
+                    <li>
+                        {% if page_of_checksheets.has_previous %}
+                            <a href="?page={{ page_of_checksheets.previous_page_number }}" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        {% else %}
+                            <span aria-hidden="true">&laquo;</span>
+                        {% endif %}
+                    </li>
+                    {# 全部页码 #}
+                    {% for page_num in page_range %}
+                        {% if page_num == page_of_checksheets.number %}
+                            <li class='active'><span>{{ page_num }}</span></li>
+                        {% else %}
+                            {% if page_num == '...'%}
+                                <li ><span>{{ page_num }}</span></li>
+                            {% else %}
+                                <li><a href="?page={{ page_num }}">{{ page_num }} </a></li>
+                            {% endif%}
+                        {% endif %}
+
+                    {% endfor %}
+                    {# 下一页 #}
+                    <li>
+                        {% if page_of_checksheets.has_next %}
+                            <a href="?page={{ page_of_checksheets.next_page_number}}" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        {% else %}
+                            <span aria-hidden="true">&raquo;</span>
+                        {% endif %}
+                    </li>
+                    </ul>
+                    <p>
+                        一共有{{ page_of_checksheets.paginator.count }}张点检表&nbsp&nbsp
+                        当前第{{ page_of_checksheets.number}}页，共{{ page_of_checksheets.paginator.num_pages }}页
+                    </p>
+                </div>
+            </div>
+
+            <div class="hidden-xs col-sm-4 col-md-3 col-lg-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">车型分类</div>
+                    <div class="panel-body">
+                        <ul class="car-types">
+                            {% for car_type in car_types %}
+                                <li>
+                                    <a href="{% url 'cars_with_type' car_type.pk %}">
+                                        {{ car_type.type_name }} ({{ car_type.checksheet_count }})
+                                    </a>
+                                </li>
+                            {% empty %}
+                                <li>暂无分类</li>
+                            {% endfor%}
+                        </ul>
+                    </div>
+                </div>
+                {# <div class="panel panel-default"> #}
+                    {# <div class="panel-heading">日期归档</div> #}
+                    {# <div class="panel-body"> #}
+                        {# <ul class="blog-date"> #}
+                            {# {% for blog_date, blog_count in blog_dates.items %} #}
+                                {# <li> #}
+                                    {# <a href="{% url 'blogs_with_date' blog_date.year blog_date.month %}"> #}
+                                        {# {{ blog_date|date:"Y年m月" }}({{ blog_count }}) #}
+                                    {# </a> #}
+                                {# </li> #}
+                            {# {% endfor %} #}
+                        {# </ul> #}
+                    {# </div> #}
+                {# </div> #}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+
+{# {% extends 'base.html' %} #}
+
+{# 页面标题 #}
+{# {% block title %} #}
+    {# 冲压部品点检系统 #}
+{# {% endblock %} #}
+
+{# 页面内容 #}
+{# {% block content %} #}
+    {# {% for checksheet in checksheets %} #}
+        {# <a href="{% url 'checksheet_page' checksheet.pk %}"> #}
+            {# <h3>{{ checksheet.parts_code }}</h3> #}
+        {# </a> #}
+        {# <p>{{ checksheet.content|truncatechars:30 }}</p> #}
+    {# {% empty %} #}
+        {# <p>--暂无点检表，敬请添加--</p> #}
+    {# {% endfor %} #}
+    {# <p>一共有{{ checksheets|length }}个点检表</p> #}
+{# {% endblock %} #}

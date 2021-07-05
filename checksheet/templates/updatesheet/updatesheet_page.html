@@ -1,0 +1,746 @@
+{% extends 'base.html' %}
+{% block title %}{{ checksheet.parts_code }}点检记录{% endblock %}
+{% block nav_updatesheet_active %}active{% endblock %}
+
+{% load static %}
+{# {% load comment_tags %} #}
+
+{% block header_extends %}
+    <link rel="stylesheet" href="{% static 'checksheet/checksheet.css' %}">
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+    <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
+
+{# 页面内容 #}
+{% block content %}
+    <div class="body">
+        <div class="title"><h3>冲  压  部  品  点  检  表</h3></div>
+       {#  <div class="container"> #}
+        <div class="row">
+            <div class="col-xs-3">
+                <ul class="checksheet-info-description">
+                    <p>管理编号：{{ updatesheet.manage_num }}&nbsp&nbsp车型：{{ updatesheet.车型 }}</p>
+                </ul>
+            </div>
+            <div class="col-xs-5">
+                <p>部品番号：{{ updatesheet.部品番号 }}&nbsp|&nbsp部品名称：{{ updatesheet.部品名称 }}</p>
+            </div>
+            <div class="col-xs-2">
+                <p>机械名：{{ updatesheet.机械名 }}</p>
+            </div>
+
+             <div class="col-xs-2">
+                <p>加工日：{{ updatesheet.updated_time|date:"Y-m-d H:i:s" }}</p>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-xs-3">
+                <p>标准SPM：{{ updatesheet.standard_spm }}&nbsp|&nbsp加工SPM：{{ updatesheet.加工SPM }}</p>
+            </div>
+            <div class="col-xs-2">
+                <p>容器：{{ updatesheet.container }}&nbsp|&nbspSNP：{{ updatesheet.SNPs }}</p>
+            </div>
+            <div class="col-xs-3">
+                <p>材质：{{ updatesheet.material }}&nbsp|&nbsp板厚：{{ updatesheet.thickness }}</p>
+            </div>
+            {% if  manage_num_one == 'B' %}
+                <div class="col-xs-2">
+                    <p>标准材料宽度：{{ updatesheet.标准材料宽度}}mm</p>
+                </div>
+                <div class="col-xs-2">
+                    <p>进给量：{{ updatesheet.进给量 }}mm</p>
+                </div>
+            {% else  %}
+                <div class="col-xs-4">
+                    <p>卷材代号：{{ updatesheet.卷材代号 }}</p>
+                </div>
+            {% endif %}
+        </div>
+        <hr>
+        <div class="row">
+            {% if  manage_num_one == 'B' %}
+                <div class="col-xs-3">
+                    <p>加工模高：{{ updatesheet.diehight_set }}&nbsp|&nbsp加工值：{{ updatesheet.模块高度 }}mm</p>
+                    <p>模具检查清扫：{{ updatesheet.模具检查清扫 }}&nbsp&nbsp</p>
+                </div>
+                <div class="col-xs-3">
+                    <p>
+                        模具修理：{{ updatesheet.模具修理 }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        机械修理：{{ updatesheet.机械修理 }}&nbsp&nbsp
+                    </p>
+                    <p>
+                        人手替换：{{ updatesheet.人手替换 }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        设变号：{{ updatesheet.设变号 }}
+                    </p>
+                </div>
+                <div class="col-xs-6">
+                    <p>
+                        加工批次号：{{ updatesheet.加工批次号 }}&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        计划数量：{{ updatesheet.计划数量 }}pcs
+                    </p>
+                    <p>
+                        生产数：{{ updatesheet.生产数 }}pcs&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        合格数：{{ updatesheet.合格数 }}pcs&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                        不良数：{{ updatesheet.不良数 }}pcs
+                    </p>
+                </div>
+            {% else  %}
+                <div class="col-xs-4">
+                    <p>拉延模压力：{{ updatesheet.draw_set }}&nbsp|&nbsp加工值：{{ updatesheet.拉延模压力 }}MPa&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp生产数：{{ updatesheet.生产数 }}pcs</p>
+                    <p>模块高度：{{ updatesheet.diehight_set }}&nbsp|&nbsp加工值：{{ updatesheet.模块高度 }}mm&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp合格数：{{ updatesheet.合格数 }}pcs</p>
+                    <p>气垫顶出高度：{{ updatesheet.cushion_set }}&nbsp|&nbsp加工值：{{ updatesheet.气垫顶出高度 }}mm&nbsp&nbsp不良数：{{ updatesheet.不良数 }}pcs</p>
+                </div>
+
+                <div class="col-xs-2">
+                    <p>模具修理：{{ updatesheet.模具修理 }}</p>
+                    <p>机械修理：{{ updatesheet.机械修理 }}</p>
+                    <p>人手替换：{{ updatesheet.人手替换 }}</p>
+                </div>
+                <div class="col-xs-1">
+                    <p>使用冲床：{{ updatesheet.使用冲床 }}</p>
+                    <p>设变号：{{ updatesheet.设变号 }}</p>
+                </div>
+                <div class="col-xs-2">
+                    <label for="BL材生产日期">BL材生产日期</label>
+                    <p>{{ updatesheet.BL材生产日期1 }}</p>
+                    <p>{{ updatesheet.BL材生产日期2 }}</p>
+                </div>
+                <div class="col-xs-3">
+                    <label for="BL材生产日期">BL材批次号</label>
+                    <p>{{ updatesheet.BL材批次号1 }}</p>
+                    <p>{{ updatesheet.BL材批次号2 }}</p>
+                </div>
+            {% endif %}
+        </div>
+        <div class="qc">
+            <div class="panel panel-default">
+                <div class="panel-heading">品质确认项目</div>
+                    <table class="table table-bordered">
+                        <tbody>
+                            <tr>
+                                <th colspan="3">管理项目（重要项目画〇）</th>
+                                <th>{{ updatesheet.manage_pj1 }}</th>
+                                <th>{{ updatesheet.manage_pj2 }}</th>
+                                <th>{{ updatesheet.manage_pj3 }}</th>
+                                <th>{{ updatesheet.manage_pj4 }}</th>
+                                <th>{{ updatesheet.manage_pj5 }}</th>
+                                <th>{{ updatesheet.manage_pj6 }}</th>
+                                <th>{{ updatesheet.manage_pj7 }}</th>
+                                <th rowspan="2">二次确认</th>
+                            </tr>
+                            <tr>
+                                <td colspan="2" rowspan="2">判断基准</td>
+                                <td>规格值</td>
+                                <td>{{ updatesheet.manage_spec1 }}</td>
+                                <td>{{ updatesheet.manage_spec2 }}</td>
+                                <td>{{ updatesheet.manage_spec3 }}</td>
+                                <td>{{ updatesheet.manage_spec4 }}</td>
+                                <td>{{ updatesheet.manage_spec5 }}</td>
+                                <td>{{ updatesheet.manage_spec6 }}</td>
+                                <td>{{ updatesheet.manage_spec7 }}</td>
+                            </tr>
+                            <tr>
+                                <td>确认方法</td>
+                                <td>{{ updatesheet.confirmation_meth1 }}</td>
+                                <td>{{ updatesheet.confirmation_meth2 }}</td>
+                                <td>{{ updatesheet.confirmation_meth3 }}</td>
+                                <td>{{ updatesheet.confirmation_meth4 }}</td>
+                                <td>{{ updatesheet.confirmation_meth5 }}</td>
+                                <td>{{ updatesheet.confirmation_meth6 }}</td>
+                                <td>{{ updatesheet.confirmation_meth7 }}</td>
+                                <td>样件对比</td>
+                            </tr>
+                            <tr>
+                                <td colspan="2">生产时间</td>
+                                <td>生产数|频次</td>
+                                <td>{{ updatesheet.confirmation_fre1 }}</td>
+                                <td>{{ updatesheet.confirmation_fre2 }}</td>
+                                <td>{{ updatesheet.confirmation_fre3 }}</td>
+                                <td>{{ updatesheet.confirmation_fre4 }}</td>
+                                <td>{{ updatesheet.confirmation_fre5 }}</td>
+                                <td>{{ updatesheet.confirmation_fre6 }}</td>
+                                <td>{{ updatesheet.confirmation_fre7 }}</td>
+                                <td>初/中/终</td>
+                            </tr>
+                            <tr>
+                                <td>初</td>
+                                <td>{{ updatesheet.初检时间 }}</td>
+                                <td>1</td>
+                                <td>{{ updatesheet.管理项目11}}</td>
+                                <td>{{ updatesheet.管理项目12}}</td>
+                                <td>{{ updatesheet.管理项目13}}</td>
+                                <td>{{ updatesheet.管理项目14}}</td>
+                                <td>{{ updatesheet.规格值15}}</td>
+                                <td>{{ updatesheet.规格值16}}</td>
+                                <td>{{ updatesheet.规格值17}}</td>
+                                <td>{{ updatesheet.二次确认1}}</td>
+                            </tr>
+                            <tr>
+                                <td>中</td>
+                                <td>{{ updatesheet.中检时间 }}</td>
+                                <td>{{ updatesheet.中检生产数 }}</td>
+                                <td>{{ updatesheet.管理项目21}}</td>
+                                <td>{{ updatesheet.管理项目22}}</td>
+                                <td>{{ updatesheet.管理项目23}}</td>
+                                <td>{{ updatesheet.管理项目24}}</td>
+                                <td>{{ updatesheet.规格值25}}</td>
+                                <td>{{ updatesheet.规格值26}}</td>
+                                <td>{{ updatesheet.规格值27}}</td>
+                                <td>{{ updatesheet.二次确认2}}</td>
+                            </tr>
+                            <tr>
+                                <td>终</td>
+                                <td>{{ updatesheet.终检时间 }}</td>
+                                <td>{{ updatesheet.终检生产数 }}</td>
+                                <td>{{ updatesheet.管理项目31}}</td>
+                                <td>{{ updatesheet.管理项目32}}</td>
+                                <td>{{ updatesheet.管理项目33}}</td>
+                                <td>{{ updatesheet.管理项目34}}</td>
+                                <td>{{ updatesheet.规格值35}}</td>
+                                <td>{{ updatesheet.规格值36}}</td>
+                                <td>{{ updatesheet.规格值37}}</td>
+                                <td>{{ updatesheet.二次确认3}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="panel panel-default">
+                <div class="panel-heading">过往不良确认</div>
+                    <table class="table table-bordered">
+                        <thead>
+                            <tr>
+                                <th>发生日</th>
+                                <th>不合格内容</th>
+                                <th>发生原因</th>
+                                <th>初</th>
+                                <th>中</th>
+                                <th>终</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{{ updatesheet.occur_day1 }}</td>
+                                <td>{{ updatesheet.unqualified1 }}</td>
+                                <td>{{ updatesheet.occur_reason1 }}</td>
+                                {% if  updatesheet.occur_day1 %}
+                                    <td>{{ updatesheet.初1 }}</td>
+                                    <td>{{ updatesheet.中1 }}</td>
+                                    <td>{{ updatesheet.终1 }}</td>
+                                {% else %}
+                                    <td>None</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                {% endif %}
+                            <tr>
+                                <td>{{ updatesheet.occur_day2 }}</td>
+                                <td>{{ updatesheet.unqualified2 }}</td>
+                                <td>{{ updatesheet.occur_reason2 }}</td>
+                                {% if  updatesheet.occur_day2 %}
+                                    <td>{{ updatesheet.初2 }}</td>
+                                    <td>{{ updatesheet.中2 }}</td>
+                                    <td>{{ updatesheet.终2 }}</td>
+                                {% else %}
+                                    <td>None</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                {% endif %}
+                            </tr>
+                            <tr>
+                                <td>{{ updatesheet.occur_day3 }}</td>
+                                <td>{{ updatesheet.unqualified3 }}</td>
+                                <td>{{ updatesheet.occur_reason3 }}</td>
+                                {% if  updatesheet.occur_day3 %}
+                                    <td>{{ updatesheet.初3 }}</td>
+                                    <td>{{ updatesheet.中3 }}</td>
+                                    <td>{{ updatesheet.终3 }}</td>
+                                {% else %}
+                                    <td>None</td>
+                                    <td>None</td>
+                                    <td>None</td>
+                                {% endif %}
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        {% if prg_or_bl == 'XX' %}
+
+        {% else %}
+            <div class="check-tools">
+                <div class="panel panel-default">
+                    <div class="panel-heading">检具点检</div>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>确认事项</th>
+                                    <th>表面碰伤</th>
+                                    <th>底部基准面</th>
+                                    <th>基准销损坏</th>
+                                    <th>基准快丢失</th>
+                                    <th>压紧臂损坏</th>
+                                    <th>表面刻线不清</th>
+                                    <th>掉漆/生锈</th>
+                                    <th>滚轮损坏</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>确认方法</td>
+                                    <td>目视</td>
+                                    <td>触摸/目视</td>
+                                    <td>晃动/目视</td>
+                                    <td>目视</td>
+                                    <td>手感/目视</td>
+                                    <td>目视</td>
+                                    <td>目视</td>
+                                    <td>推动/目视</td>
+                                </tr>
+                                <tr>
+                                    <td>确认结果</td>
+                                    <td><label>{{ updatesheet.检具1 }}</label></td>
+                                    <td><label>{{ updatesheet.检具2 }}</label></td>
+                                    <td><label>{{ updatesheet.检具3 }}</label></td>
+                                    <td><label>{{ updatesheet.检具4 }}</label></td>
+                                    <td><label>{{ updatesheet.检具5 }}</label></td>
+                                    <td><label>{{ updatesheet.检具6 }}</label></td>
+                                    <td><label>{{ updatesheet.检具7 }}</label></td>
+                                    <td><label>{{ updatesheet.检具8 }}</label></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if  prg_or_bl == 'XX' %}
+
+            <div class="row">
+                <div class="size-check">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">卷材使用信息</div>
+                        <p class="size-check">注意事项：检查时，在确认栏内划〇表示OK，划✕表示NG，并且要报告等候处理。需要计入数据的栏，务必计入数据。同意卷材号码材质，板厚至少测量一次</p>
+                        <div class="panel-body col-xs-12 col-sm-6 col-md-5 col-lg-5">
+                            {{ updatesheet.确认点位1|safe }}
+                            {{ updatesheet.确认点位2|safe }}
+                        </div>
+
+                        <div class="col-sm-6 col-md-7 col-lg-7">
+                            <div class="panel-body">
+                                <table class="table table-bordered coil-info">
+                                    <tr>
+                                        <th rowspan="3" colspan="1">NO.</th>
+                                        <th rowspan="1" colspan="10">规格判定</th>
+                                        <th rowspan="1" colspan="2">备注</th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2" colspan="6">卷材号</th>
+                                        <th rowspan="1" colspan="1">作业员</th>
+                                        <th rowspan="1" colspan="1">行车手</th>
+                                        <th rowspan="2" colspan="1">宽度</th>
+                                        <th rowspan="2" colspan="1">生产数量</th>
+                                        <th rowspan="2" colspan="1">完了</th>
+                                        <th rowspan="2" colspan="1">未完</th>
+                                    </tr>
+                                    <tr>
+                                        <th>板厚</th>
+                                        <th>板厚</th>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td colspan="6" class="coil-no1">{{ updatesheet.卷材号1 }}</td>
+                                        <td class="thickness1-1">{{ updatesheet.板厚1_1 }}</td>
+                                        <td class="thickness2-1">{{ updatesheet.板厚2_1 }}</td>
+                                        <td class="width1">{{ updatesheet.宽度1 }}</td>
+                                        <td  class="production1">{{ updatesheet.生产数量1 }}</td>
+                                        <td class="done1-1">{{ updatesheet.完成1_1 }}</td>
+                                        <td class="done2-1">{{ updatesheet.完成2_1 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td colspan="6" class="coil-no1">{{ updatesheet.卷材号2 }}</td>
+                                        <td class="thickness1-2">{{ updatesheet.板厚1_2 }}</td>
+                                        <td class="thickness2-2">{{ updatesheet.板厚2_2 }}</td>
+                                        <td class="width2">{{ updatesheet.宽度2 }}</td>
+                                        <td  class="production2">{{ updatesheet.生产数量2 }}</td>
+                                        <td class="done1-2">{{ updatesheet.完成1_2 }}</td>
+                                        <td class="done2-2">{{ updatesheet.完成2_2 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td colspan="6" class="coil-no3">{{ updatesheet.卷材号3 }}</td>
+                                        <td class="thickness1-3">{{ updatesheet.板厚1_3 }}</td>
+                                        <td class="thickness2-3">{{ updatesheet.板厚2_3 }}</td>
+                                        <td class="width3">{{ updatesheet.宽度3 }}</td>
+                                        <td class="production3">{{ updatesheet.生产数量3 }}</td>
+                                        <td class="done1-3">{{ updatesheet.完成1_3 }}</td>
+                                        <td class="done2-3">{{ updatesheet.完成2_3 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td colspan="6" class="coil-no4">{{ updatesheet.卷材号4 }}</td>
+                                        <td class="thickness1-4">{{ updatesheet.板厚1_4 }}</td>
+                                        <td class="thickness2-4">{{ updatesheet.板厚2_4 }}</td>
+                                        <td class="width4">{{ updatesheet.宽度4 }}</td>
+                                        <td class="production4">{{ updatesheet.生产数量4 }}</td>
+                                        <td class="done1-4">{{ updatesheet.完成1_4 }}</td>
+                                        <td class="done2-4">{{ updatesheet.完成2_4 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td colspan="6" class="coil-no5">{{ updatesheet.卷材号5 }}</td>
+                                        <td class="thickness1-5">{{ updatesheet.板厚1_5 }}</td>
+                                        <td class="thickness2-5">{{ updatesheet.板厚2_5 }}</td>
+                                        <td class="width5">{{ updatesheet.宽度5 }}</td>
+                                        <td class="production5">{{ updatesheet.生产数量5 }}</td>
+                                        <td class="done1-5">{{ updatesheet.完成1_5 }}</td>
+                                        <td class="done2-5">{{ updatesheet.完成2_5 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td colspan="6" class="coil-no6">{{ updatesheet.卷材号6 }}</td>
+                                        <td class="thickness1-6">{{ updatesheet.板厚1_6 }}</td>
+                                        <td class="thickness2-6">{{ updatesheet.板厚2_6 }}</td>
+                                        <td class="width6">{{ updatesheet.宽度6 }}</td>
+                                        <td class="production6">{{ updatesheet.生产数量6 }}</td>
+                                        <td class="done1-6">{{ updatesheet.完成1_6 }}</td>
+                                        <td class="done2-6">{{ updatesheet.完成2_6 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td colspan="6" class="coil-no7">{{ updatesheet.卷材号7 }}</td>
+                                        <td class="thickness1-7">{{ updatesheet.板厚1_7 }}</td>
+                                        <td class="thickness2-7">{{ updatesheet.板厚2_7 }}</td>
+                                        <td class="width7">{{ updatesheet.宽度7 }}</td>
+                                        <td class="production7">{{ updatesheet.生产数量7 }}</td>
+                                        <td class="done1-7">{{ updatesheet.完成1_7 }}</td>
+                                        <td class="done2-7">{{ updatesheet.完成2_7 }}</td>
+                                    </tr>
+                                </table>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        {% else %}
+            {% if  manage_num_one == 'B' %}
+                <div class="PRG-QC">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">卷材使用信息</div>
+                            <p class="size-check">注意事项：检查时，在确认栏内划〇表示OK，划✕表示NG，并且要报告等候处理。需要计入数据的栏，务必计入数据。同意卷材号码材质，板厚至少测量一次</p>
+                            <div>
+                                <table class="table table-bordered coil-info">
+                                    <tr>
+                                        <th rowspan="3" colspan="1">NO.</th>
+                                        <th rowspan="1" colspan="10">规格判定</th>
+                                        <th rowspan="1" colspan="2">备注</th>
+                                    </tr>
+                                    <tr>
+                                        <th rowspan="2" colspan="6">卷材号</th>
+                                        <th rowspan="1" colspan="1">作业员</th>
+                                        <th rowspan="1" colspan="1">行车手</th>
+                                        <th rowspan="2" colspan="1">宽度</th>
+                                        <th rowspan="2" colspan="1">生产数量</th>
+                                        <th rowspan="2" colspan="1">完了</th>
+                                        <th rowspan="2" colspan="1">未完</th>
+                                    </tr>
+                                    <tr>
+                                        <th>板厚</th>
+                                        <th>板厚</th>
+                                    </tr>
+                                    <tr>
+                                        <td>1</td>
+                                        <td colspan="6" class="coil-no1">{{ updatesheet.卷材号1 }}</td>
+                                        <td class="thickness1-1">{{ updatesheet.板厚1_1 }}</td>
+                                        <td class="thickness2-1">{{ updatesheet.板厚2_1 }}</td>
+                                        <td class="width1">{{ updatesheet.宽度1 }}</td>
+                                        <td  class="production1">{{ updatesheet.生产数量1 }}</td>
+                                        <td class="done1-1">{{ updatesheet.完成1_1 }}</td>
+                                        <td class="done2-1">{{ updatesheet.完成2_1 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>2</td>
+                                        <td colspan="6" class="coil-no1">{{ updatesheet.卷材号2 }}</td>
+                                        <td class="thickness1-2">{{ updatesheet.板厚1_2 }}</td>
+                                        <td class="thickness2-2">{{ updatesheet.板厚2_2 }}</td>
+                                        <td class="width2">{{ updatesheet.宽度2 }}</td>
+                                        <td  class="production2">{{ updatesheet.生产数量2 }}</td>
+                                        <td class="done1-2">{{ updatesheet.完成1_2 }}</td>
+                                        <td class="done2-2">{{ updatesheet.完成2_2 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>3</td>
+                                        <td colspan="6" class="coil-no3">{{ updatesheet.卷材号3 }}</td>
+                                        <td class="thickness1-3">{{ updatesheet.板厚1_3 }}</td>
+                                        <td class="thickness2-3">{{ updatesheet.板厚2_3 }}</td>
+                                        <td class="width3">{{ updatesheet.宽度3 }}</td>
+                                        <td class="production3">{{ updatesheet.生产数量3 }}</td>
+                                        <td class="done1-3">{{ updatesheet.完成1_3 }}</td>
+                                        <td class="done2-3">{{ updatesheet.完成2_3 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>4</td>
+                                        <td colspan="6" class="coil-no4">{{ updatesheet.卷材号4 }}</td>
+                                        <td class="thickness1-4">{{ updatesheet.板厚1_4 }}</td>
+                                        <td class="thickness2-4">{{ updatesheet.板厚2_4 }}</td>
+                                        <td class="width4">{{ updatesheet.宽度4 }}</td>
+                                        <td class="production4">{{ updatesheet.生产数量4 }}</td>
+                                        <td class="done1-4">{{ updatesheet.完成1_4 }}</td>
+                                        <td class="done2-4">{{ updatesheet.完成2_4 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>5</td>
+                                        <td colspan="6" class="coil-no5">{{ updatesheet.卷材号5 }}</td>
+                                        <td class="thickness1-5">{{ updatesheet.板厚1_5 }}</td>
+                                        <td class="thickness2-5">{{ updatesheet.板厚2_5 }}</td>
+                                        <td class="width5">{{ updatesheet.宽度5 }}</td>
+                                        <td class="production5">{{ updatesheet.生产数量5 }}</td>
+                                        <td class="done1-5">{{ updatesheet.完成1_5 }}</td>
+                                        <td class="done2-5">{{ updatesheet.完成2_5 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>6</td>
+                                        <td colspan="6" class="coil-no6">{{ updatesheet.卷材号6 }}</td>
+                                        <td class="thickness1-6">{{ updatesheet.板厚1_6 }}</td>
+                                        <td class="thickness2-6">{{ updatesheet.板厚2_6 }}</td>
+                                        <td class="width6">{{ updatesheet.宽度6 }}</td>
+                                        <td class="production6">{{ updatesheet.生产数量6 }}</td>
+                                        <td class="done1-6">{{ updatesheet.完成1_6 }}</td>
+                                        <td class="done2-6">{{ updatesheet.完成2_6 }}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>7</td>
+                                        <td colspan="6" class="coil-no7">{{ updatesheet.卷材号7 }}</td>
+                                        <td class="thickness1-7">{{ updatesheet.板厚1_7 }}</td>
+                                        <td class="thickness2-7">{{ updatesheet.板厚2_7 }}</td>
+                                        <td class="width7">{{ updatesheet.宽度7 }}</td>
+                                        <td class="production7">{{ updatesheet.生产数量7 }}</td>
+                                        <td class="done1-7">{{ updatesheet.完成1_7 }}</td>
+                                        <td class="done2-7">{{ updatesheet.完成2_7 }}</td>
+                                    </tr>
+                                </table>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="size-check">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">尺寸测量</div>
+                            <p class="size-check">【基准面对齐后，间隙小于+-0.5mm&nbsp&nbsp&nbsp&nbsp间隙标准：2.5mm~3.5mm】</p>
+                            <div class="panel-body col-xs-12 col-sm-8 col-md-7 col-lg-7">
+                                {{ updatesheet.确认点位1|safe }}
+                                {{ updatesheet.确认点位2|safe }}
+                            </div>
+
+                            <div class="col-sm-4 col-md-5 col-lg-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="text-align: center; margin-top: 0.6em;">测量值信息</div>
+                                    <div class="panel-body">
+                                        <table class="table table-bordered" style="margin-top: 0.6em;">
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>①</th>
+                                                <th>②</th>
+                                                <th>③</th>
+                                                <th>④</th>
+                                            </tr>
+                                            <tr>
+                                                <td>初</td>
+                                                <td>{{ updatesheet.初检1 }}</td>
+                                                <td>{{ updatesheet.初检2 }}</td>
+                                                <td>{{ updatesheet.初检3 }}</td>
+                                                <td>{{ updatesheet.初检4 }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>中</td>
+                                                <td>{{ updatesheet.中检1 }}</td>
+                                                <td>{{ updatesheet.中检2 }}</td>
+                                                <td>{{ updatesheet.中检3 }}</td>
+                                                <td>{{ updatesheet.中检4 }}</td>
+                                            </tr>
+                                            <tr>
+                                                <td>终</td>
+                                                <td>{{ updatesheet.终检1 }}</td>
+                                                <td>{{ updatesheet.终检2 }}</td>
+                                                <td>{{ updatesheet.终检3 }}</td>
+                                                <td>{{ updatesheet.终检4 }}</td>
+                                            </tr>
+                                        </table>
+
+                                        {% if updatesheet.确认点位2 %}
+                                            <table class="table table-bordered" style="margin-top: 0.6em;">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>①</th>
+                                                    <th>②</th>
+                                                    <th>③</th>
+                                                    <th>④</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>初</td>
+                                                    <td>{{ updatesheet.初检1 }}</td>
+                                                    <td>{{ updatesheet.初检2 }}</td>
+                                                    <td>{{ updatesheet.初检3 }}</td>
+                                                    <td>{{ updatesheet.初检4 }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>中</td>
+                                                    <td>{{ updatesheet.中检1 }}</td>
+                                                    <td>{{ updatesheet.中检2 }}</td>
+                                                    <td>{{ updatesheet.中检3 }}</td>
+                                                    <td>{{ updatesheet.中检4 }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>终</td>
+                                                    <td>{{ updatesheet.终检1 }}</td>
+                                                    <td>{{ updatesheet.终检2 }}</td>
+                                                    <td>{{ updatesheet.终检3 }}</td>
+                                                    <td>{{ updatesheet.终检4 }}</td>
+                                                </tr>
+                                            </table>
+
+                                        {% else %}
+                                            {{''}}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            {% else %}
+                <div class="row">
+                    <div class="size-check">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">尺寸测量</div>
+                            <p class="size-check">【基准面对齐后，间隙小于+-0.5mm&nbsp&nbsp&nbsp&nbsp间隙标准：2.5mm~3.5mm】</p>
+                            <div class="panel-body col-xs-12 col-sm-8 col-md-7 col-lg-7">
+                                {{ updatesheet.确认点位1|safe }}
+                                {{ updatesheet.确认点位2|safe }}
+                            </div>
+                            <div class="col-sm-4 col-md-5 col-lg-5">
+                                <div class="panel panel-default">
+                                    <div class="panel-heading" style="text-align: center; margin-top: 0.6em;">测量值及作业员信息</div>
+                                        <div class="panel-body">
+                                            <table class="table table-bordered" style="margin-top: 0.6em;">
+                                                <tr>
+                                                    <th>No.</th>
+                                                    <th>①</th>
+                                                    <th>②</th>
+                                                    <th>③</th>
+                                                    <th>④</th>
+                                                    <th>⑤</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>初</td>
+                                                    <td>{{ updatesheet.初检1 }}</td>
+                                                    <td>{{ updatesheet.初检2 }}</td>
+                                                    <td>{{ updatesheet.初检3 }}</td>
+                                                    <td>{{ updatesheet.初检4 }}</td>
+                                                    <td>{{ updatesheet.初检5 }}</td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>中</td>
+                                                    <td>{{ updatesheet.中检1 }}</td>
+                                                    <td>{{ updatesheet.中检2 }}</td>
+                                                    <td>{{ updatesheet.中检3 }}</td>
+                                                    <td>{{ updatesheet.中检4 }}</td>
+                                                    <td>{{ updatesheet.中检5 }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>终</td>
+                                                    <td>{{ updatesheet.终检1 }}</td>
+                                                    <td>{{ updatesheet.终检2 }}</td>
+                                                    <td>{{ updatesheet.终检3 }}</td>
+                                                    <td>{{ updatesheet.终检4 }}</td>
+                                                    <td>{{ updatesheet.终检5 }}</td>
+                                                </tr>
+                                            </table>
+                                            <table class="table table-bordered" style="margin-top: 0.6em;">
+                                                <tr>
+                                                    <td>A</td>
+                                                    <td>{{ updatesheet.作业员A }}</td>
+                                                    <td>B</td>
+                                                    <td>{{ updatesheet.作业员B }}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>C</td>
+                                                    <td>{{ updatesheet.作业员C }}</td>
+                                                    <td>D</td>
+                                                    <td>{{ updatesheet.作业员D }}</td>
+                                            </table>
+                                            {% if updatesheet.确认点位2 %}
+                                                <table class="table table-bordered" style="margin-top: 0.6em;">
+                                                    <tr>
+                                                        <th>No.</th>
+                                                        <th>①</th>
+                                                        <th>②</th>
+                                                        <th>③</th>
+                                                        <th>④</th>
+                                                        <th>⑤</th>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>初</td>
+                                                        <td>{{ updatesheet.初检21 }}</td>
+                                                        <td>{{ updatesheet.初检22 }}</td>
+                                                        <td>{{ updatesheet.初检23 }}</td>
+                                                        <td>{{ updatesheet.初检24 }}</td>
+                                                        <td>{{ updatesheet.初检25 }}</td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td>中</td>
+                                                        <td>{{ updatesheet.中检21 }}</td>
+                                                        <td>{{ updatesheet.中检22 }}</td>
+                                                        <td>{{ updatesheet.中检23 }}</td>
+                                                        <td>{{ updatesheet.中检24 }}</td>
+                                                        <td>{{ updatesheet.中检25 }}</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>终</td>
+                                                        <td>{{ updatesheet.终检21 }}</td>
+                                                        <td>{{ updatesheet.终检22 }}</td>
+                                                        <td>{{ updatesheet.终检23 }}</td>
+                                                        <td>{{ updatesheet.终检24 }}</td>
+                                                        <td>{{ updatesheet.终检25 }}</td>
+                                                    </tr>
+                                                </table>
+                                            {% else %}
+                                                {{''}}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        {% endif %}
+    </div>
+{% endblock %}
+
+
+
+
+
+
+
+

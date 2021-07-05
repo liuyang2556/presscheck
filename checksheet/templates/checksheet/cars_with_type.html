@@ -1,0 +1,8 @@
+{% extends 'checksheet/checksheet_list.html' %}
+{% block title %}{{ car_type.type_name }}{% endblock %}
+
+{% block checksheet_list_title %}
+    车型：{{ car_type.type_name }}&nbsp&nbsp&nbsp&nbsp
+    <a href="{%  url 'checksheet_list' %}">查看全部点检表</a>
+{% endblock %}
+{# 页面内容 #}

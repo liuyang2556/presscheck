@@ -573,7 +573,8 @@ def tendencychart_list(request):
 def tendencychart_page(request, checksheet_pk):
     checksheet = get_object_or_404(CheckSheet, pk=checksheet_pk)
     prg_or_bl = CheckSheet.objects.filter(parts_code=checksheet.parts_code).values_list("parts_code", flat=True)[0][::-1][0:2]
-    print(prg_or_bl)
+    manage_num_one = CheckSheet.objects.filter(parts_code=checksheet.parts_code).values_list("管理编号", flat=True)[0][0]
+
     checkpoint = UpdateSheet.objects.filter(部品番号=checksheet.parts_code).values_list("确认点位2", flat=True)[0]
     # updatesheet = UpdateSheet.objects.all()
     checktime = UpdateSheet.objects.filter(部品番号=checksheet.parts_code).values_list("updated_time", flat=True)

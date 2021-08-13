@@ -43,7 +43,7 @@
             <div class="row">
                 <div class="col-xs-3">
                     <p>标准SPM：{{ checksheet.标准spm }}&nbsp|&nbsp
-                   加工SPM：<input type="text" name="加工SPM" style="height: 25px;width: 40px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.标准spm }}';"></p>
+                   加工SPM：<input type="text" name="加工SPM" style="height: 25px;width: 40px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.标准spm }}';" onkeydown="if(event.keyCode==13){return false;}"></p>
                 </div>
                 <div class="col-xs-2">
                     <p>容器：{{ checksheet.容器 }}&nbsp|&nbspSNP：{{ checksheet.SNP }}</p>
@@ -61,7 +61,7 @@
                     </div>
                 {% else  %}
                     <div class="col-xs-4">
-                        <p>卷材代号：<input type="text" name="卷材代号" id="coil-code"  style="height: 25px;width: 300px;"></p>
+                        <p>卷材代号：<input type="text" name="卷材代号" id="coil-code"  style="height: 25px;width: 300px;" onkeydown="if(event.keyCode==13){return false;}"></p>
                     </div>
                 {% endif %}
             </div>
@@ -69,7 +69,7 @@
             <div class="row">
                 {% if  manage_num_one == 'B' %}
                     <div class="col-xs-3">
-                        <p>加工模高：{{ checksheet.模块高度设定 }}mm&nbsp|&nbsp加工值：<input type="text" name="模具高度" style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.模块高度设定 }}';">mm</p>
+                        <p>加工模高：{{ checksheet.模块高度设定 }}mm&nbsp|&nbsp加工值：<input type="text" name="模具高度" style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.模块高度设定 }}';" onkeydown="if(event.keyCode==13){return false;}">mm</p>
                         <p>模具检查清扫&nbsp&nbsp
                             <label>
                                 <input type="radio" name="模具检查清扫" id="模具检查清扫1" value="有" checked>有
@@ -83,7 +83,6 @@
                                 <input type="radio" name="模具修理" id="模具修理1" value="有">有
                                 <input type="radio"  name="模具修理" id="模具修理2" value="无" checked>无
                             </label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-
                             机械修理&nbsp&nbsp
                             <label>
                                 <input type="radio" name="机械修理" id="机械修理1" value="有">有
@@ -95,25 +94,25 @@
                                 <input type="radio" name="人手替换" id="人手替换1" value="有">有
                                 <input type="radio"  name="人手替换" id="人手替换2" value="无" checked>无
                             </label>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                            设变号：<input type="text" name="设变号" style="height: 25px;width: 80px;" placeholder="无">
+                            设变号：<input type="text" name="设变号" style="height: 25px;width: 80px;" placeholder="无"  onkeydown="if(event.keyCode==13){return false;}">
                         </p>
                     </div>
                     <div class="col-xs-6">
                         <p>
-                            加工批次号：<input type="text" name="加工批次号" style="height: 25px;width: 200px;">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                            计划数量：<input type="text" name="计划数量" style="height: 25px;width: 100px;" oninput = "value=value.replace(/[^\d]/g,'')">pcs
+                            加工批次号：<input type="text" name="加工批次号" style="height: 25px;width: 200px;" onkeydown="if(event.keyCode==13){return false;}">&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            计划数量：<input type="text" name="计划数量" style="height: 25px;width: 100px;" oninput = "value=value.replace(/[^\d]/g,'')" onkeydown="if(event.keyCode==13){return false;}">pcs
                         </p>
                         <p>
-                            生产数：<input type="text" name="生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">pcs&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                            合格数：<input type="text" name="合格数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">pcs&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-                            不良数：<input type="text" name="不良数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">pcs
+                            生产数：<input type="text" name="生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')" onkeydown="if(event.keyCode==13){return false;}">pcs&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            合格数：<input type="text" name="合格数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')" onkeydown="if(event.keyCode==13){return false;}">pcs&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+                            不良数：<input type="text" name="不良数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')" onkeydown="if(event.keyCode==13){return false;}">pcs
                         </p>
                     </div>
                 {% else  %}
                     <div class="col-xs-4">
-                        <p>拉延模压力：{{ checksheet.拉延模压力设定 }}&nbsp|&nbsp加工值：<input type="text" name="拉延模压力"style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.拉延模压力设定 }}';">MPa&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp生产数：<input type="text" name="生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">个</p>
-                        <p>模块高度：{{ checksheet.模块高度设定 }}&nbsp|&nbsp加工值：<input type="text" name="模具高度" style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.模块高度设定 }}';">mm&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp合格数：<input type="text" name="合格数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">个</p>
-                        <p>气垫顶出高度：{{ checksheet.气垫顶出高度设定 }}&nbsp|&nbsp加工值：<input type="text" name="气垫顶出高度" style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.气垫顶出高度设定 }}';">mm&nbsp&nbsp不良数：<input type="text" name="不良数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')">个</p>
+                        <p>拉延模压力：{{ checksheet.拉延模压力设定 }}&nbsp|&nbsp加工值：<input type="text" name="拉延模压力"style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.拉延模压力设定 }}';" onkeydown="if(event.keyCode==13){return false;}">MPa&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp生产数：<input type="text" name="生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')" onkeydown="if(event.keyCode==13){return false;}">个</p>
+                        <p>模块高度：{{ checksheet.模块高度设定 }}&nbsp|&nbsp加工值：<input type="text" name="模具高度" style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.模块高度设定 }}';" onkeydown="if(event.keyCode==13){return false;}">mm&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp合格数：<input type="text" name="合格数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')" onkeydown="if(event.keyCode==13){return false;}">个</p>
+                        <p>气垫顶出高度：{{ checksheet.气垫顶出高度设定 }}&nbsp|&nbsp加工值：<input type="text" name="气垫顶出高度" style="height: 25px;width: 60px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.气垫顶出高度设定 }}';" onkeydown="if(event.keyCode==13){return false;}">mm&nbsp&nbsp不良数：<input type="text" name="不良数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')" onkeydown="if(event.keyCode==13){return false;}">个</p>
                     </div>
                     <div class="col-xs-2">
                         <p>模具修理&nbsp&nbsp
@@ -142,7 +141,7 @@
                                 <input type="radio"  name="使用冲床" id="使用冲床2" value="无" >后
                             </label>
                         </p>
-                        <p>设变号：<input type="text" name="设变号" style="height: 25px;width: 80px;" placeholder="无"></p>
+                        <p>设变号：<input type="text" name="设变号" style="height: 25px;width: 80px;" placeholder="无"onkeydown="if(event.keyCode==13){return false;}"></p>
                     </div>
                     <div class="col-xs-2">
                         <label for="BL材生产日期">BL材生产日期</label>
@@ -151,8 +150,8 @@
                     </div>
                     <div class="col-xs-3">
                         <label for="BL材批次号">BL材批次号</label>
-                        <input type="text" name="BL材批次号1" class="form-control" id="BL材批次号1">
-                        <input type="text" name="BL材批次号2" class="form-control" id="BL材批次号2">
+                        <input type="text" name="BL材批次号1" class="form-control" id="BL材批次号1" onkeydown="if(event.keyCode==13){return false;}">
+                        <input type="text" name="BL材批次号2" class="form-control" id="BL材批次号2" onkeydown="if(event.keyCode==13){return false;}">
                     </div>
                 {% endif %}
             </div>
@@ -235,15 +234,15 @@
                                             <input type="radio"  name="管理项目14" id="管理项目14-2" value="NG">NG
                                         </label>
                                     </td>
-                                    <td><input type="text" name="规格值15" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值5 }}';"></td>
-                                    <td><input type="text" name="规格值16" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值6 }}';"></td>
-                                    <td><input type="text" name="规格值17" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值7 }}';"></td>
-                                    <td><input type="text" name="二次确认1" style="height: 25px;width: 90px;"  onfocus="javascript:if(this.value=='')this.value='OK';"></td>
+                                    <td><input type="text" name="规格值15" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值5 }}';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                    <td><input type="text" name="规格值16" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值6 }}';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                    <td><input type="text" name="规格值17" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值7 }}';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                    <td><input type="text" name="二次确认1" style="height: 25px;width: 90px;"  onfocus="javascript:if(this.value=='')this.value='OK';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                 </tr>
                                 <tr>
                                     <td>中</td>
                                     <td><input type="time" name="中检时间" style="border:none;"></td>
-                                    <td><input type="text" name="中检生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')"></td>
+                                    <td><input type="text" name="中检生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')" onkeydown="if(event.keyCode==13){return false;}"></td>
                                     <td>
                                         <label>
                                             <input type="radio" name="管理项目21" id="管理项目21-1" value="OK">OK
@@ -268,15 +267,15 @@
                                             <input type="radio"  name="管理项目24" id="管理项目24-2" value="NG">NG
                                         </label>
                                     </td>
-                                    <td><input type="text" name="规格值25" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值5 }}';"></td>
-                                    <td><input type="text" name="规格值26" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值6 }}';"></td>
-                                    <td><input type="text" name="规格值27" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值7 }}';"></td>
-                                    <td><input type="text" name="二次确认2" style="height: 25px;width: 90px;"  onfocus="javascript:if(this.value=='')this.value='OK';"></td>
+                                    <td><input type="text" name="规格值25" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值5 }}';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                    <td><input type="text" name="规格值26" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值6 }}';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                    <td><input type="text" name="规格值27" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值7 }}';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                    <td><input type="text" name="二次确认2" style="height: 25px;width: 90px;"  onfocus="javascript:if(this.value=='')this.value='OK';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                 </tr>
                                 <tr>
                                     <td>终</td>
                                     <td><input type="time" name="终检时间" style="border:none;"></td>
-                                    <td><input type="text" name="终检生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')"></td>
+                                    <td><input type="text" name="终检生产数" style="height: 25px;width: 60px;" oninput = "value=value.replace(/[^\d]/g,'')" onkeydown="if(event.keyCode==13){return false;}"></td>
                                     <td>
                                         <label>
                                             <input type="radio" name="管理项目31" id="管理项目31-1" value="OK">OK
@@ -301,10 +300,10 @@
                                             <input type="radio"  name="管理项目34" id="管理项目34-2" value="NG">NG
                                         </label>
                                     </td>
-                                    <td><input type="text" name="规格值35" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值5 }}';"></td>
-                                    <td><input type="text" name="规格值36" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值6 }}';"></td>
-                                    <td><input type="text" name="规格值37" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值7 }}';"></td>
-                                    <td><input type="text" name="二次确认3" style="height: 25px;width: 90px;"  onfocus="javascript:if(this.value=='')this.value='OK';"></td>
+                                    <td><input type="text" name="规格值35" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值5 }}';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                    <td><input type="text" name="规格值36" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值6 }}';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                    <td><input type="text" name="规格值37" style="height: 25px;width: 90px;" onfocus="javascript:if(this.value=='')this.value='{{ checksheet.规格值7 }}';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                    <td><input type="text" name="二次确认3" style="height: 25px;width: 90px;"  onfocus="javascript:if(this.value=='')this.value='OK';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -546,73 +545,73 @@
                                         </tr>
                                         <tr>
                                             <td>1</td>
-                                            <td colspan="6" class="coil-no1"><input class="float" name="卷材号1" type="text"></td>
-                                            <td class="thickness1-1"><input class="float" name="板厚1-1" type="text"></td>
-                                            <td class="thickness2-1"><input class="float" name="板厚2-1" type="text"></td>
-                                            <td class="width1"><input class="float" name="宽度1" type="text"></td>
-                                            <td  class="production1"><input class="float" name="生产数量1" type="text"></td>
-                                            <td class="done1-1"><input class="float" name="完成1-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-1"><input class="float" name="完成2-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no1"><input class="float" name="卷材号1" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-1"><input class="float" name="板厚1-1" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-1"><input class="float" name="板厚2-1" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width1"><input class="float" name="宽度1" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td  class="production1"><input class="float" name="生产数量1" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-1"><input class="float" name="完成1-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-1"><input class="float" name="完成2-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
-                                            <td colspan="6" class="coil-no2"><input class="float" name="卷材号2" type="text"></td>
-                                            <td class="thickness1-2"><input class="float" name="板厚1-2" type="text"></td>
-                                            <td class="thickness2-2"><input class="float" name="板厚2-2" type="text"></td>
-                                            <td class="width2"><input class="float" name="宽度2" type="text"></td>
-                                            <td class="production2"><input class="float" name="生产数量2" type="text"></td>
-                                            <td class="done1-2"><input class="float" name="完成1-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-2"><input class="float" name="完成2-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no2"><input class="float" name="卷材号2" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-2"><input class="float" name="板厚1-2" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-2"><input class="float" name="板厚2-2" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width2"><input class="float" name="宽度2" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production2"><input class="float" name="生产数量2" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-2"><input class="float" name="完成1-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-2"><input class="float" name="完成2-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>3</td>
-                                            <td colspan="6" class="coil-no3"><input class="float" name="卷材号3" type="text"></td>
-                                            <td class="thickness1-3"><input class="float" name="板厚1-3" type="text"></td>
-                                            <td class="thickness2-3"><input class="float" name="板厚2-3" type="text"></td>
-                                            <td class="width3"><input class="float" name="宽度3" type="text"></td>
-                                            <td class="production3"><input class="float" name="生产数量3" type="text"></td>
-                                            <td class="done1-3"><input class="float" name="完成1-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-3"><input class="float" name="完成2-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no3"><input class="float" name="卷材号3" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-3"><input class="float" name="板厚1-3" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-3"><input class="float" name="板厚2-3" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width3"><input class="float" name="宽度3" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production3"><input class="float" name="生产数量3" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-3"><input class="float" name="完成1-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-3"><input class="float" name="完成2-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
-                                            <td colspan="6" class="coil-no4"><input class="float" name="卷材号4" type="text"></td>
-                                            <td class="thickness1-4"><input class="float" name="板厚1-4" type="text"></td>
-                                            <td class="thickness2-4"><input class="float" name="板厚2-4" type="text"></td>
-                                            <td class="width4"><input class="float" name="宽度4" type="text"></td>
-                                            <td class="production4"><input class="float" name="生产数量4" type="text"></td>
-                                            <td class="done1-4"><input class="float" name="完成1-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-4"><input class="float" name="完成2-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no4"><input class="float" name="卷材号4" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-4"><input class="float" name="板厚1-4" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-4"><input class="float" name="板厚2-4" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width4"><input class="float" name="宽度4" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production4"><input class="float" name="生产数量4" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-4"><input class="float" name="完成1-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-4"><input class="float" name="完成2-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>5</td>
-                                            <td colspan="6" class="coil-no5"><input class="float" name="卷材号5" type="text"></td>
-                                            <td class="thickness1-5"><input class="float" name="板厚1-5" type="text"></td>
-                                            <td class="thickness2-5"><input class="float" name="板厚2-5" type="text"></td>
-                                            <td class="width5"><input class="float" name="宽度5" type="text"></td>
-                                            <td class="production5"><input class="float" name="生产数量5" type="text"></td>
-                                            <td class="done1-5"><input class="float" name="完成1-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-5"><input class="float" name="完成2-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no5"><input class="float" name="卷材号5" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-5"><input class="float" name="板厚1-5" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-5"><input class="float" name="板厚2-5" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width5"><input class="float" name="宽度5" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production5"><input class="float" name="生产数量5" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-5"><input class="float" name="完成1-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-5"><input class="float" name="完成2-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>6</td>
-                                            <td colspan="6" class="coil-no6"><input class="float" name="卷材号6" type="text"></td>
-                                            <td class="thickness1-6"><input class="float" name="板厚1-6" type="text"></td>
-                                            <td class="thickness2-6"><input class="float" name="板厚2-6" type="text"></td>
-                                            <td class="width6"><input class="float" name="宽度6" type="text"></td>
-                                            <td class="production6"><input class="float" name="生产数量6" type="text"></td>
-                                            <td class="done1-6"><input class="float" name="完成1-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-6"><input class="float" name="完成2-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no6"><input class="float" name="卷材号6" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-6"><input class="float" name="板厚1-6" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-6"><input class="float" name="板厚2-6" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width6"><input class="float" name="宽度6" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production6"><input class="float" name="生产数量6" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-6"><input class="float" name="完成1-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-6"><input class="float" name="完成2-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>7</td>
-                                            <td colspan="6" class="coil-no7"><input class="float" name="卷材号7" type="text"></td>
-                                            <td class="thickness1-7"><input class="float" name="板厚1-7" type="text"></td>
-                                            <td class="thickness2-7"><input class="float" name="板厚2-7" type="text"></td>
-                                            <td class="width7"><input class="float" name="宽度7" type="text"></td>
-                                            <td class="production7"><input class="float" name="生产数量7" type="text"></td>
-                                            <td class="done1-7"><input class="float" name="完成1-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-7"><input class="float" name="完成2-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no7"><input class="float" name="卷材号7" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-7"><input class="float" name="板厚1-7" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-7"><input class="float" name="板厚2-7" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width7"><input class="float" name="宽度7" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production7"><input class="float" name="生产数量7" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-7"><input class="float" name="完成1-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-7"><input class="float" name="完成2-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                     </table>
                                 </div>
@@ -676,7 +675,8 @@
                                 <input type="hidden" name="occur_reason3" value="{{ checksheet.发生原因3 }}">
                                 <input type="hidden" name="确认点位1" value="{{ checksheet.content1 }}">
                                 <input type="hidden" name="确认点位2" value="{{ checksheet.content2 }}">
-                                <input type="submit" value="提交" class="btn btn-primary pull-right">
+                                {# <input type="submit" value="提交" class="btn btn-primary pull-right"> #}
+                                <button type="submit" value="提交" class="btn btn-primary pull-right">提交</button>
                             </div>
 
                         </div>
@@ -712,73 +712,73 @@
                                         </tr>
                                         <tr>
                                             <td>1</td>
-                                            <td colspan="6" class="coil-no1"><input class="float" name="卷材号1" type="text"></td>
-                                            <td class="thickness1-1"><input class="float" name="板厚1-1" type="text"></td>
-                                            <td class="thickness2-1"><input class="float" name="板厚2-1" type="text"></td>
-                                            <td class="width1"><input class="float" name="宽度1" type="text"></td>
-                                            <td  class="production1"><input class="float" name="生产数量1" type="text"></td>
-                                            <td class="done1-1"><input class="float" name="完成1-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-1"><input class="float" name="完成2-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no1"><input class="float" name="卷材号1" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-1"><input class="float" name="板厚1-1" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-1"><input class="float" name="板厚2-1" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width1"><input class="float" name="宽度1" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td  class="production1"><input class="float" name="生产数量1" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-1"><input class="float" name="完成1-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-1"><input class="float" name="完成2-1" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>2</td>
-                                            <td colspan="6" class="coil-no2"><input class="float" name="卷材号2" type="text"></td>
-                                            <td class="thickness1-2"><input class="float" name="板厚1-2" type="text"></td>
-                                            <td class="thickness2-2"><input class="float" name="板厚2-2" type="text"></td>
-                                            <td class="width2"><input class="float" name="宽度2" type="text"></td>
-                                            <td class="production2"><input class="float" name="生产数量2" type="text"></td>
-                                            <td class="done1-2"><input class="float" name="完成1-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-2"><input class="float" name="完成2-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no2"><input class="float" name="卷材号2" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-2"><input class="float" name="板厚1-2" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-2"><input class="float" name="板厚2-2" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width2"><input class="float" name="宽度2" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production2"><input class="float" name="生产数量2" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-2"><input class="float" name="完成1-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-2"><input class="float" name="完成2-2" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>3</td>
-                                            <td colspan="6" class="coil-no3"><input class="float" name="卷材号3" type="text"></td>
-                                            <td class="thickness1-3"><input class="float" name="板厚1-3" type="text"></td>
-                                            <td class="thickness2-3"><input class="float" name="板厚2-3" type="text"></td>
-                                            <td class="width3"><input class="float" name="宽度3" type="text"></td>
-                                            <td class="production3"><input class="float" name="生产数量3" type="text"></td>
-                                            <td class="done1-3"><input class="float" name="完成1-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-3"><input class="float" name="完成2-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no3"><input class="float" name="卷材号3" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-3"><input class="float" name="板厚1-3" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-3"><input class="float" name="板厚2-3" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width3"><input class="float" name="宽度3" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production3"><input class="float" name="生产数量3" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-3"><input class="float" name="完成1-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-3"><input class="float" name="完成2-3" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>4</td>
-                                            <td colspan="6" class="coil-no4"><input class="float" name="卷材号4" type="text"></td>
-                                            <td class="thickness1-4"><input class="float" name="板厚1-4" type="text"></td>
-                                            <td class="thickness2-4"><input class="float" name="板厚2-4" type="text"></td>
-                                            <td class="width4"><input class="float" name="宽度4" type="text"></td>
-                                            <td class="production4"><input class="float" name="生产数量4" type="text"></td>
-                                            <td class="done1-4"><input class="float" name="完成1-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-4"><input class="float" name="完成2-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no4"><input class="float" name="卷材号4" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-4"><input class="float" name="板厚1-4" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-4"><input class="float" name="板厚2-4" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width4"><input class="float" name="宽度4" type="text"onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production4"><input class="float" name="生产数量4" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-4"><input class="float" name="完成1-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-4"><input class="float" name="完成2-4" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>5</td>
-                                            <td colspan="6" class="coil-no5"><input class="float" name="卷材号5" type="text"></td>
-                                            <td class="thickness1-5"><input class="float" name="板厚1-5" type="text"></td>
-                                            <td class="thickness2-5"><input class="float" name="板厚2-5" type="text"></td>
-                                            <td class="width5"><input class="float" name="宽度5" type="text"></td>
-                                            <td class="production5"><input class="float" name="生产数量5" type="text"></td>
-                                            <td class="done1-5"><input class="float" name="完成1-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-5"><input class="float" name="完成2-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no5"><input class="float" name="卷材号5" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-5"><input class="float" name="板厚1-5" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-5"><input class="float" name="板厚2-5" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width5"><input class="float" name="宽度5" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production5"><input class="float" name="生产数量5" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-5"><input class="float" name="完成1-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-5"><input class="float" name="完成2-5" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>6</td>
-                                            <td colspan="6" class="coil-no6"><input class="float" name="卷材号6" type="text"></td>
-                                            <td class="thickness1-6"><input class="float" name="板厚1-6" type="text"></td>
-                                            <td class="thickness2-6"><input class="float" name="板厚2-6" type="text"></td>
-                                            <td class="width6"><input class="float" name="宽度6" type="text"></td>
-                                            <td class="production6"><input class="float" name="生产数量6" type="text"></td>
-                                            <td class="done1-6"><input class="float" name="完成1-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-6"><input class="float" name="完成2-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no6"><input class="float" name="卷材号6" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-6"><input class="float" name="板厚1-6" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-6"><input class="float" name="板厚2-6" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width6"><input class="float" name="宽度6" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production6"><input class="float" name="生产数量6" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-6"><input class="float" name="完成1-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-6"><input class="float" name="完成2-6" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                         <tr>
                                             <td>7</td>
-                                            <td colspan="6" class="coil-no7"><input class="float" name="卷材号7" type="text"></td>
-                                            <td class="thickness1-7"><input class="float" name="板厚1-7" type="text"></td>
-                                            <td class="thickness2-7"><input class="float" name="板厚2-7" type="text"></td>
-                                            <td class="width7"><input class="float" name="宽度7" type="text"></td>
-                                            <td class="production7"><input class="float" name="生产数量7" type="text"></td>
-                                            <td class="done1-7"><input class="float" name="完成1-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
-                                            <td class="done2-7"><input class="float" name="完成2-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';"></td>
+                                            <td colspan="6" class="coil-no7"><input class="float" name="卷材号7" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness1-7"><input class="float" name="板厚1-7" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="thickness2-7"><input class="float" name="板厚2-7" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="width7"><input class="float" name="宽度7" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="production7"><input class="float" name="生产数量7" type="text" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done1-7"><input class="float" name="完成1-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
+                                            <td class="done2-7"><input class="float" name="完成2-7" type="text"  onfocus="javascript:if(this.value=='')this.value='〇';" onkeydown="if(event.keyCode==13){return false;}"></td>
                                         </tr>
                                     </table>
 
@@ -792,12 +792,12 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">尺寸测量</div>
                                 <p class="size-check">【基准面对齐后，间隙小于+-0.5mm&nbsp&nbsp&nbsp&nbsp间隙标准：2.5mm~3.5mm】</p>
-                                <div class="panel-body col-xs-12 col-sm-8 col-md-7 col-lg-7">
+                                <div class="panel-body col-xs-12 col-sm-7 col-md-7 col-lg-7">
                                     {{ checksheet.content1|safe }}
                                     {{ checksheet.content2|safe }}
                                 </div>
 
-                                <div class="col-sm-4 col-md-5 col-lg-5">
+                                <div class="col-sm-5 col-md-5 col-lg-5">
                                     <div class="panel panel-default">
                                         <div class="panel-heading" style="text-align: center; margin-top: 0.6em;">测量值信息</div>
                                         <div class="panel-body">
@@ -812,46 +812,46 @@
                                                 <tr>
                                                     <td>初</td>
                                                     <td>
-                                                        <input class="float" type="text" name="初检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="初检1" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="初检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="初检2" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="初检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="初检3" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="初检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="初检4" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>中</td>
                                                     <td>
-                                                        <input class="float" type="text" name="中检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="中检1" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="中检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="中检2" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="中检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="中检3" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="中检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="中检4" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>终</td>
                                                     <td>
-                                                        <input class="float" type="text" name="终检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="终检1" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="终检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="终检2" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="终检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="终检3"  onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="终检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="终检4"  onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
 
                                                 </tr>
@@ -869,46 +869,46 @@
                                                     <tr>
                                                         <td>初</td>
                                                         <td>
-                                                            <input class="float" type="text" name="初检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="初检21"  onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="初检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="初检22"  onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="初检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="初检23"  onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="初检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="初检24"  onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>中</td>
                                                         <td>
-                                                            <input class="float" type="text" name="中检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="中检21" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="中检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="中检22" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="中检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="中检23" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="中检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="中检24" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>终</td>
                                                         <td>
-                                                            <input class="float" type="text" name="终检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="终检21" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="终检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="终检22" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="终检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="终检23" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="终检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="终检24" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -977,7 +977,8 @@
                                     <input type="hidden" name="occur_reason3" value="{{ checksheet.发生原因3 }}">
                                     <input type="hidden" name="确认点位1" value="{{ checksheet.content1 }}">
                                     <input type="hidden" name="确认点位2" value="{{ checksheet.content2 }}">
-                                    <input type="submit" value="提交" class="btn btn-primary pull-right">
+                                    {# <input type="submit" value="提交" class="btn btn-primary pull-right"> #}
+                                    <button type="submit" value="提交" class="btn btn-primary pull-right">提交</button>
                                 </div>
 
                             </div>
@@ -990,12 +991,12 @@
                             <div class="panel panel-default">
                                 <div class="panel-heading">尺寸测量</div>
                                 <p class="size-check">【基准面对齐后，间隙小于+-0.5mm&nbsp&nbsp&nbsp&nbsp间隙标准：2.5mm~3.5mm】</p>
-                                <div class="panel-body col-xs-12 col-sm-8 col-md-7 col-lg-7">
+                                <div class="panel-body col-xs-12 col-sm-7 col-md-7 col-lg-7">
                                     {{ checksheet.content1|safe }}
                                     {{ checksheet.content2|safe }}
                                 </div>
 
-                                <div class="col-sm-4 col-md-5 col-lg-5">
+                                <div class="col-sm-5 col-md-5 col-lg-5">
                                     <div class="panel panel-default">
                                         <div class="panel-heading" style="text-align: center; margin-top: 0.6em;">测量值及作业员信息</div>
                                         <div class="panel-body">
@@ -1011,70 +1012,70 @@
                                                 <tr>
                                                     <td>初</td>
                                                     <td>
-                                                        <input class="float" type="text" name="初检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="初检1" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="初检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="初检2" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="初检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="初检3" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="初检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="初检4" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="初检5" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="初检5" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>中</td>
                                                     <td>
-                                                        <input class="float" type="text" name="中检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="中检1"onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="中检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="中检2"onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="中检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="中检3"onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="中检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="中检4"onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="中检5" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="中检5"onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>终</td>
                                                     <td>
-                                                        <input class="float" type="text" name="终检1" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="终检1" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="终检2" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="终检2" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="终检3" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="终检3" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="终检4" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="终检4" onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                     <td>
-                                                        <input class="float" type="text" name="终检5"  onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                        <input class="float" type="text" name="终检5"  onkeydown="if(event.keyCode==13){return false;}">
                                                     </td>
                                                 </tr>
                                             </table>
                                             <table class="table table-bordered" style="margin-top: 0.6em;">
                                                 <tr>
                                                     <td>A</td>
-                                                    <td class="human"><input class="float" name="作业员A" type="text"></td>
+                                                    <td class="human"><input class="float" name="作业员A" type="text"  onkeydown="if(event.keyCode==13){return false;}"></td>
                                                     <td>B</td>
-                                                    <td class="human"><input class="float" name="作业员B" type="text"></td>
+                                                    <td class="human"><input class="float" name="作业员B" type="text"  onkeydown="if(event.keyCode==13){return false;}"></td>
                                                 </tr>
                                                 <tr>
                                                     <td>C</td>
-                                                    <td class="human"><input  class="float" name="作业员C" type="text"></td>
+                                                    <td class="human"><input  class="float" name="作业员C" type="text"  onkeydown="if(event.keyCode==13){return false;}"></td>
                                                     <td>D</td>
-                                                    <td class="human"><input  class="float" name="作业员D" type="text"></td>
+                                                    <td class="human"><input  class="float" name="作业员D" type="text"  onkeydown="if(event.keyCode==13){return false;}"></td>
                                                 </tr>
                                             </table>
                                             {% if checksheet.content2 %}
@@ -1090,55 +1091,55 @@
                                                     <tr>
                                                         <td>初</td>
                                                         <td>
-                                                            <input class="float" type="text" name="初检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="初检21" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="初检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="初检22" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="初检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="初检23" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="初检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="初检24" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="初检25" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="初检25" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>中</td>
                                                         <td>
-                                                            <input class="float" type="text" name="中检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="中检21" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="中检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="中检22" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="中检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="中检23" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="中检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="中检24" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="中检25" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="中检25" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                     </tr>
                                                     <tr>
                                                         <td>终</td>
                                                         <td>
-                                                            <input class="float" type="text" name="终检21" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="终检21" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="终检22" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="终检22" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="终检23" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="终检23" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="终检24" onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="终检24" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                         <td>
-                                                            <input class="float" type="text" name="终检25"  onkeypress="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onkeyup="if(!this.value.match(/^[\+\-]?\d*?\.?\d*?$/))this.value=this.t_value;else this.t_value=this.value;if(this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/))this.o_value=this.value" onblur="if(!this.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/))this.value=this.o_value;else{if(this.value.match(/^\.\d+$/))this.value=0+this.value;if(this.value.match(/^\.$/))this.value=0;this.o_value=this.value}">
+                                                            <input class="float" type="text" name="终检25" onkeydown="if(event.keyCode==13){return false;}">
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -1208,7 +1209,8 @@
                                     <input type="hidden" name="occur_reason3" value="{{ checksheet.发生原因3 }}">
                                     <input type="hidden" name="确认点位1" value="{{ checksheet.content1 }}">
                                     <input type="hidden" name="确认点位2" value="{{ checksheet.content2 }}">
-                                    <input type="submit" value="提交" class="btn btn-primary pull-right">
+                                    {# <input type="submit" value="提交" class="btn btn-primary pull-right"> #}
+                                    <button type="submit" value="提交" class="btn btn-primary pull-right">提交</button>
                                 </div>
 
                             </div>

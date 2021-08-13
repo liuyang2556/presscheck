@@ -181,7 +181,7 @@ EMAIL_USE_TLS = True  # 与SMTP服务器通信时，是否启动TLS链接（安�
 
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'haystack.backends.whoosh_cn_backend.WhooshEngine',
+        'ENGINE': 'haystack.backends.whoosh_backend.WhooshEngine',
         'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
     }
 }

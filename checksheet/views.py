@@ -1191,3 +1191,19 @@ def search2(request):
     context['search_checksheets_count'] = search_checksheets.count()
     context['page_of_checksheets'] = page_of_checksheets
     return render(request, 'tendencychart/search2.html', context)
+
+def search3(request):
+    search_words = request.GET.get('wd', '')
+    # 筛选：搜索
+    search_checksheets = CheckSheet.objects.filter(parts_code__icontains=search_words)
+
+    # 分页
+    paginator = Paginator(search_checksheets, 10)
+    page_num = request.GET.get('page', 1)  #获取url的页面参数（GET请求）
+    page_of_checksheets = paginator.get_page(page_num)
+
+    context = {}
+    context['search_words'] = search_words
+    context['search_checksheets_count'] = search_checksheets.count()
+    context['page_of_checksheets'] = page_of_checksheets
+    return render(request, 'checksheet/search3.html', context)

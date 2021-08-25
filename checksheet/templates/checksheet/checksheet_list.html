@@ -94,20 +94,16 @@
                         </ul>
                     </div>
                 </div>
-                {# <div class="panel panel-default"> #}
-                    {# <div class="panel-heading">日期归档</div> #}
-                    {# <div class="panel-body"> #}
-                        {# <ul class="blog-date"> #}
-                            {# {% for blog_date, blog_count in blog_dates.items %} #}
-                                {# <li> #}
-                                    {# <a href="{% url 'blogs_with_date' blog_date.year blog_date.month %}"> #}
-                                        {# {{ blog_date|date:"Y年m月" }}({{ blog_count }}) #}
-                                    {# </a> #}
-                                {# </li> #}
-                            {# {% endfor %} #}
-                        {# </ul> #}
-                    {# </div> #}
-                {# </div> #}
+                <div class="search3">
+                    <form class="navbar-form search-form3" action="{% url 'search3' %}">
+                        <div class="form-group">
+                            <input type="text" name="wd" class="form-control" placeholder="检索点检表">
+                        </div>
+                        <button type="submit" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>

@@ -15,4 +15,5 @@ urlpatterns = [
     path('tendencychart', views.tendencychart_list, name="tendencychart_list"),
     path('tendencychart/<int:checksheet_pk>', views.tendencychart_page, name="tendencychart_page"),
     path('search2/', views.search2, name="search2"),
+    path('search3/', views.search3, name="search3"),
 ]
